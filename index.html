@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kind Nuts Encyclopedia — The Community for Nut Enthusiasts</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'k-orange': '#E8A020',
+            'k-red': '#CC2929',
+            'k-green': '#8CB43A',
+            'k-blue': '#00AEEF',
+            'k-black': '#1A1A1A',
+            'k-cream': '#F8F7F4',
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; color: #1A1A1A; margin: 0; }
+    .font-display { font-family: 'Anton', sans-serif; }
+
+    /* Grain overlay */
+    .grain::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Animations */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .afu   { animation: fadeUp 0.65s cubic-bezier(0.16, 1, 0.3, 1) both; }
+    .d1    { animation-delay: 0.05s; }
+    .d2    { animation-delay: 0.15s; }
+    .d3    { animation-delay: 0.25s; }
+    .d4    { animation-delay: 0.38s; }
+    .d5    { animation-delay: 0.50s; }
+
+    /* Card hover lift */
+    .card-lift {
+      transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1),
+                  box-shadow 0.22s ease;
+    }
+    .card-lift:hover  { transform: translateY(-6px); }
+    .card-lift:active { transform: translateY(-2px) scale(0.99); }
+
+    /* Link underline */
+    .link-arrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-weight: 600;
+      font-size: 0.8125rem;
+      transition: gap 0.18s ease;
+    }
+    .link-arrow:hover { gap: 8px; }
+
+    /* Nav link */
+    .nav-link {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: rgba(26,26,26,0.6);
+      transition: color 0.15s ease;
+      position: relative;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -2px; left: 0; right: 0;
+      height: 2px;
+      background: #E8A020;
+      transform: scaleX(0);
+      transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .nav-link:hover { color: #1A1A1A; }
+    .nav-link:hover::after { transform: scaleX(1); }
+
+    /* Category card */
+    .cat-card {
+      position: relative;
+      border-radius: 20px;
+      overflow: hidden;
+      aspect-ratio: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 22px;
+      text-decoration: none;
+    }
+    .cat-card .overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.0) 55%);
+    }
+    .cat-card .content { position: relative; z-index: 2; }
+    .cat-card .emoji {
+      font-size: 2.25rem;
+      display: block;
+      margin-bottom: 6px;
+      transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .cat-card:hover .emoji { transform: scale(1.15) rotate(-4deg); }
+
+    /* Feature card */
+    .feat-card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 20px;
+      padding: 32px;
+      transition: background 0.2s ease, border-color 0.2s ease;
+    }
+    .feat-card:hover {
+      background: rgba(255,255,255,0.08);
+      border-color: rgba(255,255,255,0.18);
+    }
+
+    /* Stat box */
+    .stat-box {
+      border-radius: 16px;
+      padding: 24px;
+    }
+
+    /* Input */
+    .email-input {
+      flex: 1;
+      border: 1.5px solid rgba(26,26,26,0.18);
+      border-radius: 999px;
+      padding: 14px 22px;
+      font-size: 0.9375rem;
+      outline: none;
+      transition: border-color 0.18s ease, box-shadow 0.18s ease;
+      font-family: 'Inter', sans-serif;
+    }
+    .email-input:focus {
+      border-color: #E8A020;
+      box-shadow: 0 0 0 3px rgba(232,160,32,0.18);
+    }
+
+    /* CTA button */
+    .btn-primary {
+      background: #E8A020;
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.9375rem;
+      padding: 14px 28px;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.15s ease, transform 0.12s ease, box-shadow 0.15s ease;
+      box-shadow: 0 6px 24px rgba(232,160,32,0.38), 0 1px 4px rgba(0,0,0,0.1);
+      font-family: 'Inter', sans-serif;
+    }
+    .btn-primary:hover  { background: #d4911c; box-shadow: 0 8px 32px rgba(232,160,32,0.5); }
+    .btn-primary:focus-visible { outline: 2px solid #E8A020; outline-offset: 3px; }
+    .btn-primary:active { transform: scale(0.97); }
+
+    .btn-ghost {
+      background: rgba(255,255,255,0.1);
+      color: #fff;
+      font-weight: 600;
+      font-size: 0.9375rem;
+      padding: 14px 28px;
+      border-radius: 999px;
+      border: 1.5px solid rgba(255,255,255,0.2);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.15s ease, transform 0.12s ease;
+      font-family: 'Inter', sans-serif;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .btn-ghost:hover  { background: rgba(255,255,255,0.16); }
+    .btn-ghost:focus-visible { outline: 2px solid rgba(255,255,255,0.5); outline-offset: 3px; }
+    .btn-ghost:active { transform: scale(0.97); }
+
+    /* Dot pattern */
+    .dot-bg {
+      background-image: radial-gradient(circle, rgba(0,0,0,0.12) 1.5px, transparent 1.5px);
+      background-size: 22px 22px;
+    }
+
+    /* Color bars */
+    .color-bar { display: flex; }
+    .color-bar span { flex: 1; }
+  </style>
+</head>
+<body>
+
+  <!-- Top accent bar -->
+  <div class="color-bar" style="height:4px;">
+    <span style="background:#E8A020;"></span>
+    <span style="background:#CC2929;"></span>
+    <span style="background:#8CB43A;"></span>
+    <span style="background:#00AEEF;"></span>
+  </div>
+
+  <!-- ─── NAVIGATION ─────────────────────────────────────────── -->
+  <nav style="background:#fff; border-bottom:1px solid rgba(26,26,26,0.08); position:sticky; top:0; z-index:100;">
+    <div style="max-width:1200px; margin:0 auto; padding:0 24px; height:68px; display:flex; align-items:center; justify-content:space-between;">
+      <img src="brand_assets/KindNuts-logo.png" alt="KIND Nuts" style="height:38px; width:auto; display:block;">
+      <div style="display:flex; align-items:center; gap:36px;">
+        <a href="#encyclopedia" class="nav-link">Encyclopedia</a>
+        <a href="#categories" class="nav-link">Categories</a>
+        <a href="#community" class="nav-link">Community</a>
+        <a href="#join" class="nav-link">Recipes</a>
+      </div>
+      <a href="#join" class="btn-primary" style="padding:10px 22px; font-size:0.875rem; text-decoration:none; display:inline-block;">Join Free</a>
+    </div>
+  </nav>
+
+  <!-- ─── HERO ───────────────────────────────────────────────── -->
+  <section class="grain" style="background:#1A1A1A; position:relative; overflow:hidden; display:flex; align-items:center;">
+
+    <!-- Ambient glow -->
+    <div style="position:absolute; top:-100px; left:10%; width:700px; height:700px; border-radius:50%;
+                background:radial-gradient(circle, rgba(232,160,32,0.12) 0%, transparent 70%);
+                pointer-events:none;"></div>
+    <div style="position:absolute; bottom:-80px; right:5%; width:500px; height:500px; border-radius:50%;
+                background:radial-gradient(circle, rgba(0,174,239,0.07) 0%, transparent 70%);
+                pointer-events:none;"></div>
+
+    <!-- Vertical color accent strips (right edge) -->
+    <div style="position:absolute; right:0; top:0; bottom:0; display:flex; width:16px; z-index:2;">
+      <span style="flex:1; background:#00AEEF; opacity:0.85;"></span>
+    </div>
+    <div style="position:absolute; right:16px; top:0; bottom:0; display:flex; width:10px;">
+      <span style="flex:1; background:#8CB43A; opacity:0.85;"></span>
+    </div>
+    <div style="position:absolute; right:26px; top:0; bottom:0; display:flex; width:10px;">
+      <span style="flex:1; background:#CC2929; opacity:0.85;"></span>
+    </div>
+    <div style="position:absolute; right:36px; top:0; bottom:0; display:flex; width:10px;">
+      <span style="flex:1; background:#E8A020; opacity:0.85;"></span>
+    </div>
+
+    <div style="max-width:1200px; margin:0 auto; padding:96px 24px; position:relative; z-index:3;">
+
+      <!-- Eyebrow -->
+      <div class="afu d1" style="display:inline-flex; align-items:center; gap:10px; margin-bottom:20px;">
+        <div class="color-bar" style="height:14px; width:28px; border-radius:2px; overflow:hidden; gap:2px;">
+          <span style="background:#E8A020; flex:1;"></span>
+          <span style="background:#CC2929; flex:1;"></span>
+          <span style="background:#8CB43A; flex:1;"></span>
+          <span style="background:#00AEEF; flex:1;"></span>
+        </div>
+        <span style="color:rgba(255,255,255,0.5); font-size:0.6875rem; font-weight:700; letter-spacing:0.14em; text-transform:uppercase;">The Community Encyclopedia</span>
+      </div>
+
+      <!-- Headline -->
+      <h1 class="font-display afu d2" style="color:#fff; font-size:clamp(3.5rem, 9vw, 7.5rem); line-height:0.93; letter-spacing:-0.025em; margin:0 0 24px;">
+        KNOW<br>YOUR <span style="color:#E8A020;">NUTS.</span>
+      </h1>
+
+      <!-- Sub -->
+      <p class="afu d3" style="color:rgba(255,255,255,0.6); font-size:1.125rem; line-height:1.75; max-width:480px; margin:0 0 40px;">
+        The world's most comprehensive nut knowledge hub. Discover varieties, nutrition science, and connect with thousands of fellow enthusiasts.
+      </p>
+
+      <!-- CTAs -->
+      <div class="afu d4" style="display:flex; flex-wrap:wrap; gap:14px; margin-bottom:64px;">
+        <a href="#categories" class="btn-primary" style="text-decoration:none; display:inline-block;">Explore Encyclopedia &rarr;</a>
+        <a href="#join" class="btn-ghost">Join the Community</a>
+      </div>
+
+      <!-- Stats row -->
+      <div class="afu d5" style="display:flex; flex-wrap:wrap; gap:32px; align-items:center;">
+        <div>
+          <div class="font-display" style="color:#fff; font-size:2.25rem; letter-spacing:-0.02em; line-height:1;">400+</div>
+          <div style="color:rgba(255,255,255,0.4); font-size:0.8125rem; margin-top:4px;">Nut Varieties</div>
+        </div>
+        <div style="width:1px; height:40px; background:rgba(255,255,255,0.12);"></div>
+        <div>
+          <div class="font-display" style="color:#fff; font-size:2.25rem; letter-spacing:-0.02em; line-height:1;">12K+</div>
+          <div style="color:rgba(255,255,255,0.4); font-size:0.8125rem; margin-top:4px;">Community Members</div>
+        </div>
+        <div style="width:1px; height:40px; background:rgba(255,255,255,0.12);"></div>
+        <div>
+          <div class="font-display" style="color:#fff; font-size:2.25rem; letter-spacing:-0.02em; line-height:1;">2,800+</div>
+          <div style="color:rgba(255,255,255,0.4); font-size:0.8125rem; margin-top:4px;">Articles & Recipes</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Mid color bar -->
+  <div class="color-bar" style="height:6px;">
+    <span style="background:#E8A020;"></span>
+    <span style="background:#CC2929;"></span>
+    <span style="background:#8CB43A;"></span>
+    <span style="background:#00AEEF;"></span>
+  </div>
+
+  <!-- ─── CATEGORIES ─────────────────────────────────────────── -->
+  <section id="categories" style="padding:96px 24px; background:#F8F7F4;">
+    <div style="max-width:1200px; margin:0 auto;">
+
+      <div style="display:flex; align-items:flex-end; justify-content:space-between; margin-bottom:48px; flex-wrap:wrap; gap:16px;">
+        <div>
+          <p style="color:#E8A020; font-size:0.6875rem; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; margin:0 0 10px;">Browse by Category</p>
+          <h2 class="font-display" style="font-size:clamp(2rem,4.5vw,3.75rem); letter-spacing:-0.03em; line-height:0.95; margin:0;">
+            THE NUT<br>UNIVERSE
+          </h2>
+        </div>
+        <a href="#" class="link-arrow" style="color:rgba(26,26,26,0.5);">View all categories <span>&rarr;</span></a>
+      </div>
+
+      <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:16px;">
+
+        <!-- Almonds -->
+        <a href="#" class="cat-card card-lift" style="background:#E8A020; box-shadow:0 4px 24px rgba(232,160,32,0.28), 0 1px 6px rgba(0,0,0,0.08);">
+          <div class="overlay"></div>
+          <div class="content">
+            <span class="emoji">🥜</span>
+            <div class="font-display" style="color:#fff; font-size:1.25rem; letter-spacing:-0.01em; line-height:1.1;">ALMONDS</div>
+            <div style="color:rgba(255,255,255,0.7); font-size:0.75rem; margin-top:3px;">84 articles</div>
+          </div>
+        </a>
+
+        <!-- Cashews -->
+        <a href="#" class="cat-card card-lift" style="background:#00AEEF; box-shadow:0 4px 24px rgba(0,174,239,0.28), 0 1px 6px rgba(0,0,0,0.08);">
+          <div class="overlay"></div>
+          <div class="content">
+            <span class="emoji">🌰</span>
+            <div class="font-display" style="color:#fff; font-size:1.25rem; letter-spacing:-0.01em; line-height:1.1;">CASHEWS</div>
+            <div style="color:rgba(255,255,255,0.7); font-size:0.75rem; margin-top:3px;">62 articles</div>
+          </div>
+        </a>
+
+        <!-- Walnuts -->
+        <a href="#" class="cat-card card-lift" style="background:#CC2929; box-shadow:0 4px 24px rgba(204,41,41,0.28), 0 1px 6px rgba(0,0,0,0.08);">
+          <div class="overlay"></div>
+          <div class="content">
+            <span class="emoji">🪨</span>
+            <div class="font-display" style="color:#fff; font-size:1.25rem; letter-spacing:-0.01em; line-height:1.1;">WALNUTS</div>
+            <div style="color:rgba(255,255,255,0.7); font-size:0.75rem; margin-top:3px;">57 articles</div>
+          </div>
+        </a>
+
+        <!-- Pistachios -->
+        <a href="#" class="cat-card card-lift" style="background:#8CB43A; box-shadow:0 4px 24px rgba(140,180,58,0.28), 0 1px 6px rgba(0,0,0,0.08);">
+          <div class="overlay"></div>
+          <div class="content">
+            <span class="emoji">🌿</span>
+            <div class="font-display" style="color:#fff; font-size:1.25rem; letter-spacing:-0.01em; line-height:1.1;">PISTACHIOS</div>
+            <div style="color:rgba(255,255,255,0.7); font-size:0.75rem; margin-top:3px;">45 articles</div>
+          </div>
+        </a>
+
+        <!-- Peanuts -->
+        <a href="#" class="cat-card card-lift" style="background:#1A1A1A; box-shadow:0 4px 24px rgba(0,0,0,0.22), 0 1px 6px rgba(0,0,0,0.1);">
+          <div class="overlay"></div>
+          <div class="content">
+            <span class="emoji">🥜</span>
+            <div class="font-display" style="color:#fff; font-size:1.25rem; letter-spacing:-0.01em; line-height:1.1;">PEANUTS</div>
+            <div style="color:rgba(255,255,255,0.7); font-size:0.75rem; margin-top:3px;">71 articles</div>
+          </div>
+        </a>
+
+        <!-- Hazelnuts -->
+        <a href="#" class="cat-card card-lift" style="background:#E8A020; box-shadow:0 4px 24px rgba(232,160,32,0.28), 0 1px 6px rgba(0,0,0,0.08);">
+          <div class="overlay"></div>
+          <div class="content">
+            <span class="emoji">🌰</span>
+            <div class="font-display" style="color:#fff; font-size:1.25rem; letter-spacing:-0.01em; line-height:1.1;">HAZELNUTS</div>
+            <div style="color:rgba(255,255,255,0.7); font-size:0.75rem; margin-top:3px;">38 articles</div>
+          </div>
+        </a>
+
+        <!-- Pecans -->
+        <a href="#" class="cat-card card-lift" style="background:#00AEEF; box-shadow:0 4px 24px rgba(0,174,239,0.28), 0 1px 6px rgba(0,0,0,0.08);">
+          <div class="overlay"></div>
+          <div class="content">
+            <span class="emoji">🌰</span>
+            <div class="font-display" style="color:#fff; font-size:1.25rem; letter-spacing:-0.01em; line-height:1.1;">PECANS</div>
+            <div style="color:rgba(255,255,255,0.7); font-size:0.75rem; margin-top:3px;">29 articles</div>
+          </div>
+        </a>
+
+        <!-- More -->
+        <a href="#" class="cat-card card-lift" style="background:#fff; border:2px dashed rgba(26,26,26,0.15); box-shadow:0 2px 12px rgba(0,0,0,0.05); justify-content:center; align-items:center;">
+          <div style="text-align:center;">
+            <div style="width:48px; height:48px; border-radius:50%; background:rgba(232,160,32,0.12); display:flex; align-items:center; justify-content:center; margin:0 auto 10px;">
+              <span style="color:#E8A020; font-size:1.5rem; font-weight:800; line-height:1;">+</span>
+            </div>
+            <div class="font-display" style="font-size:1.1rem; letter-spacing:-0.01em; color:#1A1A1A;">50+ MORE</div>
+            <div style="color:rgba(26,26,26,0.4); font-size:0.75rem; margin-top:3px;">Varieties</div>
+          </div>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── FEATURED ARTICLES ──────────────────────────────────── -->
+  <section id="encyclopedia" style="padding:96px 24px; background:#fff;">
+    <div style="max-width:1200px; margin:0 auto;">
+
+      <div style="display:flex; align-items:flex-end; justify-content:space-between; margin-bottom:48px; flex-wrap:wrap; gap:16px;">
+        <div>
+          <p style="color:#E8A020; font-size:0.6875rem; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; margin:0 0 10px;">From the Encyclopedia</p>
+          <h2 class="font-display" style="font-size:clamp(2rem,4.5vw,3.75rem); letter-spacing:-0.03em; line-height:0.95; margin:0;">
+            FEATURED<br>ARTICLES
+          </h2>
+        </div>
+        <a href="#" class="link-arrow" style="color:rgba(26,26,26,0.5);">Browse all <span>&rarr;</span></a>
+      </div>
+
+      <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:24px;">
+
+        <!-- Article 1 -->
+        <article class="card-lift" style="border-radius:20px; overflow:hidden; background:#F8F7F4; box-shadow:0 2px 16px rgba(0,0,0,0.06), 0 1px 4px rgba(0,0,0,0.04);">
+          <div style="position:relative; aspect-ratio:4/3; overflow:hidden;">
+            <img src="https://placehold.co/640x480/E8A020/ffffff?text=Almonds" alt="Almonds" style="width:100%; height:100%; object-fit:cover; display:block; transition:transform 0.5s ease;">
+            <div style="position:absolute; inset:0; background:linear-gradient(to top, rgba(0,0,0,0.55) 0%, transparent 60%);"></div>
+            <div style="position:absolute; inset:0; background:rgba(232,160,32,0.15); mix-blend-mode:multiply;"></div>
+            <span style="position:absolute; top:14px; left:14px; background:#E8A020; color:#fff; font-size:0.6875rem; font-weight:700; padding:5px 12px; border-radius:999px; letter-spacing:0.04em;">ALMONDS</span>
+          </div>
+          <div style="padding:22px;">
+            <h3 class="font-display" style="font-size:1.0625rem; letter-spacing:-0.01em; line-height:1.2; margin:0 0 10px;">THE COMPLETE GUIDE TO ALMOND VARIETIES</h3>
+            <p style="color:rgba(26,26,26,0.55); font-size:0.875rem; line-height:1.7; margin:0 0 16px;">From Marcona to Nonpareil — a deep dive into the world's most popular nut and the differences that matter.</p>
+            <a href="#" class="link-arrow" style="color:#E8A020;">Read more <span>&rarr;</span></a>
+          </div>
+        </article>
+
+        <!-- Article 2 -->
+        <article class="card-lift" style="border-radius:20px; overflow:hidden; background:#F8F7F4; box-shadow:0 2px 16px rgba(0,0,0,0.06), 0 1px 4px rgba(0,0,0,0.04);">
+          <div style="position:relative; aspect-ratio:4/3; overflow:hidden;">
+            <img src="https://placehold.co/640x480/00AEEF/ffffff?text=Nutrition" alt="Nutrition" style="width:100%; height:100%; object-fit:cover; display:block; transition:transform 0.5s ease;">
+            <div style="position:absolute; inset:0; background:linear-gradient(to top, rgba(0,0,0,0.55) 0%, transparent 60%);"></div>
+            <div style="position:absolute; inset:0; background:rgba(0,174,239,0.15); mix-blend-mode:multiply;"></div>
+            <span style="position:absolute; top:14px; left:14px; background:#00AEEF; color:#fff; font-size:0.6875rem; font-weight:700; padding:5px 12px; border-radius:999px; letter-spacing:0.04em;">NUTRITION</span>
+          </div>
+          <div style="padding:22px;">
+            <h3 class="font-display" style="font-size:1.0625rem; letter-spacing:-0.01em; line-height:1.2; margin:0 0 10px;">WHY NUTS ARE NATURE'S PERFECT SNACK</h3>
+            <p style="color:rgba(26,26,26,0.55); font-size:0.875rem; line-height:1.7; margin:0 0 16px;">Science-backed evidence on why adding a daily handful of mixed nuts transforms your long-term health.</p>
+            <a href="#" class="link-arrow" style="color:#00AEEF;">Read more <span>&rarr;</span></a>
+          </div>
+        </article>
+
+        <!-- Article 3 -->
+        <article class="card-lift" style="border-radius:20px; overflow:hidden; background:#F8F7F4; box-shadow:0 2px 16px rgba(0,0,0,0.06), 0 1px 4px rgba(0,0,0,0.04);">
+          <div style="position:relative; aspect-ratio:4/3; overflow:hidden;">
+            <img src="https://placehold.co/640x480/8CB43A/ffffff?text=Recipes" alt="Recipes" style="width:100%; height:100%; object-fit:cover; display:block; transition:transform 0.5s ease;">
+            <div style="position:absolute; inset:0; background:linear-gradient(to top, rgba(0,0,0,0.55) 0%, transparent 60%);"></div>
+            <div style="position:absolute; inset:0; background:rgba(140,180,58,0.15); mix-blend-mode:multiply;"></div>
+            <span style="position:absolute; top:14px; left:14px; background:#8CB43A; color:#fff; font-size:0.6875rem; font-weight:700; padding:5px 12px; border-radius:999px; letter-spacing:0.04em;">RECIPES</span>
+          </div>
+          <div style="padding:22px;">
+            <h3 class="font-display" style="font-size:1.0625rem; letter-spacing:-0.01em; line-height:1.2; margin:0 0 10px;">10 WAYS TO USE CASHEWS IN COOKING</h3>
+            <p style="color:rgba(26,26,26,0.55); font-size:0.875rem; line-height:1.7; margin:0 0 16px;">Beyond snacking — creative culinary applications that showcase the cashew's remarkable versatility in the kitchen.</p>
+            <a href="#" class="link-arrow" style="color:#8CB43A;">Read more <span>&rarr;</span></a>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── COMMUNITY BANNER ───────────────────────────────────── -->
+  <section id="community" class="dot-bg" style="background:#E8A020; position:relative; overflow:hidden;">
+    <div style="max-width:1200px; margin:0 auto; padding:80px 24px;">
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:center;">
+
+        <div>
+          <h2 class="font-display" style="font-size:clamp(2.75rem,5.5vw,5rem); letter-spacing:-0.03em; line-height:0.93; margin:0 0 20px; color:#1A1A1A;">
+            HOW TO<br>BE KIND.
+          </h2>
+          <p style="color:rgba(26,26,26,0.65); font-size:1.0625rem; line-height:1.75; margin:0 0 28px; max-width:420px;">
+            Join a community that's passionate about nuts, nutrition, and doing things right. Share knowledge, discover recipes, and connect with enthusiasts from around the world.
+          </p>
+          <a href="#join" class="btn-primary" style="text-decoration:none; display:inline-block; background:#1A1A1A; box-shadow:0 6px 24px rgba(0,0,0,0.3);">
+            Join the Community &rarr;
+          </a>
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
+          <div class="stat-box" style="background:#1A1A1A;">
+            <div class="font-display" style="color:#E8A020; font-size:2.5rem; letter-spacing:-0.02em; line-height:1;">12K+</div>
+            <div style="color:#fff; font-size:0.875rem; margin-top:4px;">Active Members</div>
+          </div>
+          <div class="stat-box" style="background:#fff;">
+            <div class="font-display" style="color:#1A1A1A; font-size:2.5rem; letter-spacing:-0.02em; line-height:1;">400+</div>
+            <div style="color:rgba(26,26,26,0.55); font-size:0.875rem; margin-top:4px;">Nut Varieties</div>
+          </div>
+          <div class="stat-box" style="background:#CC2929;">
+            <div class="font-display" style="color:#fff; font-size:2.5rem; letter-spacing:-0.02em; line-height:1;">2.8K</div>
+            <div style="color:rgba(255,255,255,0.75); font-size:0.875rem; margin-top:4px;">Articles Written</div>
+          </div>
+          <div class="stat-box" style="background:#00AEEF;">
+            <div class="font-display" style="color:#fff; font-size:2.5rem; letter-spacing:-0.02em; line-height:1;">98%</div>
+            <div style="color:rgba(255,255,255,0.75); font-size:0.875rem; margin-top:4px;">Member Satisfaction</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── FEATURES ──────────────────────────────────────────── -->
+  <section style="padding:96px 24px; background:#1A1A1A;">
+    <div style="max-width:1200px; margin:0 auto;">
+
+      <div style="text-align:center; margin-bottom:56px;">
+        <p style="color:#E8A020; font-size:0.6875rem; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; margin:0 0 10px;">Why Join Us</p>
+        <h2 class="font-display" style="color:#fff; font-size:clamp(2rem,4.5vw,3.75rem); letter-spacing:-0.03em; line-height:0.95; margin:0;">
+          EVERYTHING<br>YOU NEED
+        </h2>
+      </div>
+
+      <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:20px;">
+
+        <div class="feat-card">
+          <div style="width:52px; height:52px; border-radius:14px; background:rgba(232,160,32,0.12); display:flex; align-items:center; justify-content:center; margin-bottom:20px; font-size:1.625rem;">📚</div>
+          <h3 class="font-display" style="color:#fff; font-size:1.125rem; letter-spacing:-0.01em; margin:0 0 12px;">EXPERT-CURATED KNOWLEDGE</h3>
+          <p style="color:rgba(255,255,255,0.5); font-size:0.875rem; line-height:1.75; margin:0;">Thousands of peer-reviewed articles covering every aspect of nuts — from cultivation and biology to culinary science.</p>
+        </div>
+
+        <div class="feat-card">
+          <div style="width:52px; height:52px; border-radius:14px; background:rgba(0,174,239,0.12); display:flex; align-items:center; justify-content:center; margin-bottom:20px; font-size:1.625rem;">👥</div>
+          <h3 class="font-display" style="color:#fff; font-size:1.125rem; letter-spacing:-0.01em; margin:0 0 12px;">VIBRANT COMMUNITY</h3>
+          <p style="color:rgba(255,255,255,0.5); font-size:0.875rem; line-height:1.75; margin:0;">Discuss, debate, and discover with 12,000+ members who share your passion for nuts and healthy, intentional snacking.</p>
+        </div>
+
+        <div class="feat-card">
+          <div style="width:52px; height:52px; border-radius:14px; background:rgba(140,180,58,0.12); display:flex; align-items:center; justify-content:center; margin-bottom:20px; font-size:1.625rem;">🍽️</div>
+          <h3 class="font-display" style="color:#fff; font-size:1.125rem; letter-spacing:-0.01em; margin:0 0 12px;">RECIPE LIBRARY</h3>
+          <p style="color:rgba(255,255,255,0.5); font-size:0.875rem; line-height:1.75; margin:0;">Thousands of community-tested recipes featuring nuts as the star ingredient — from savory dishes to indulgent sweets.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── JOIN / NEWSLETTER ─────────────────────────────────── -->
+  <section id="join" style="padding:96px 24px; background:#fff;">
+    <div style="max-width:560px; margin:0 auto; text-align:center;">
+
+      <div style="display:flex; justify-content:center; gap:6px; margin-bottom:24px;">
+        <span style="width:10px; height:10px; border-radius:3px; background:#E8A020; display:block;"></span>
+        <span style="width:10px; height:10px; border-radius:3px; background:#CC2929; display:block;"></span>
+        <span style="width:10px; height:10px; border-radius:3px; background:#8CB43A; display:block;"></span>
+        <span style="width:10px; height:10px; border-radius:3px; background:#00AEEF; display:block;"></span>
+      </div>
+
+      <h2 class="font-display" style="font-size:clamp(2rem,4.5vw,3.75rem); letter-spacing:-0.03em; line-height:0.95; margin:0 0 16px;">
+        JOIN THE<br>ENCYCLOPEDIA
+      </h2>
+      <p style="color:rgba(26,26,26,0.55); font-size:1.0625rem; line-height:1.75; margin:0 0 32px;">
+        Get weekly nut facts, new articles, community highlights, and exclusive recipes — straight to your inbox.
+      </p>
+
+      <form style="display:flex; gap:10px; max-width:440px; margin:0 auto;" onsubmit="return false;">
+        <input type="email" placeholder="your@email.com" class="email-input" aria-label="Email address">
+        <button type="submit" class="btn-primary">Join Free</button>
+      </form>
+      <p style="color:rgba(26,26,26,0.35); font-size:0.75rem; margin:14px 0 0;">No spam. Unsubscribe anytime.</p>
+
+    </div>
+  </section>
+
+  <!-- ─── FOOTER ─────────────────────────────────────────────── -->
+  <footer style="background:#1A1A1A; padding:64px 24px 40px;">
+    <div style="max-width:1200px; margin:0 auto;">
+
+      <!-- Top accent line -->
+      <div class="color-bar" style="height:3px; border-radius:2px; overflow:hidden; margin-bottom:48px;">
+        <span style="background:#E8A020;"></span>
+        <span style="background:#CC2929;"></span>
+        <span style="background:#8CB43A;"></span>
+        <span style="background:#00AEEF;"></span>
+      </div>
+
+      <div style="display:grid; grid-template-columns:1.4fr 1fr 1fr 1fr; gap:40px; margin-bottom:48px;">
+
+        <div>
+          <img src="brand_assets/KindNuts-logo.png" alt="KIND Nuts" style="height:36px; width:auto; margin-bottom:14px; display:block;">
+          <p style="color:rgba(255,255,255,0.35); font-size:0.875rem; line-height:1.7; margin:0; max-width:220px;">The world's most comprehensive nut knowledge community.</p>
+        </div>
+
+        <div>
+          <h4 style="color:#fff; font-size:0.8125rem; font-weight:600; margin:0 0 16px; letter-spacing:0.02em;">Encyclopedia</h4>
+          <ul style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:10px;">
+            <li><a href="#" style="color:rgba(255,255,255,0.38); font-size:0.875rem; text-decoration:none; transition:color 0.15s;" onmouseover="this.style.color='rgba(255,255,255,0.75)'" onmouseout="this.style.color='rgba(255,255,255,0.38)'">All Varieties</a></li>
+            <li><a href="#" style="color:rgba(255,255,255,0.38); font-size:0.875rem; text-decoration:none; transition:color 0.15s;" onmouseover="this.style.color='rgba(255,255,255,0.75)'" onmouseout="this.style.color='rgba(255,255,255,0.38)'">Nutrition Database</a></li>
+            <li><a href="#" style="color:rgba(255,255,255,0.38); font-size:0.875rem; text-decoration:none; transition:color 0.15s;" onmouseover="this.style.color='rgba(255,255,255,0.75)'" onmouseout="this.style.color='rgba(255,255,255,0.38)'">Growing Guides</a></li>
+            <li><a href="#" style="color:rgba(255,255,255,0.38); font-size:0.875rem; text-decoration:none; transition:color 0.15s;" onmouseover="this.style.color='rgba(255,255,255,0.75)'" onmouseout="this.style.color='rgba(255,255,255,0.38)'">History & Origins</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 style="color:#fff; font-size:0.8125rem; font-weight:600; margin:0 0 16px; letter-spacing:0.02em;">Community</h4>
+          <ul style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:10px;">
+            <li><a href="#" style="color:rgba(255,255,255,0.38); font-size:0.875rem; text-decoration:none; transition:color 0.15s;" onmouseover="this.style.color='rgba(255,255,255,0.75)'" onmouseout="this.style.color='rgba(255,255,255,0.38)'">Forums</a></li>
+            <li><a href="#" style="color:rgba(255,255,255,0.38); font-size:0.875rem; text-decoration:none; transition:color 0.15s;" onmouseover="this.style.color='rgba(255,255,255,0.75)'" onmouseout="this.style.color='rgba(255,255,255,0.38)'">Recipes</a></li>
+            <li><a href="#" style="color:rgba(255,255,255,0.38); font-size:0.875rem; text-decoration:none; transition:color 0.15s;" onmouseover="this.style.color='rgba(255,255,255,0.75)'" onmouseout="this.style.color='rgba(255,255,255,0.38)'">Events</a></li>
+            <li><a href="#" style="color:rgba(255,255,255,0.38); font-size:0.875rem; text-decoration:none; transition:color 0.15s;" onmouseover="this.style.color='rgba(255,255,255,0.75)'" onmouseout="this.style.color='rgba(255,255,255,0.38)'">Newsletter</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 style="color:#fff; font-size:0.8125rem; font-weight:600; margin:0 0 16px; letter-spacing:0.02em;">About</h4>
+          <ul style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:10px;">
+            <li><a href="#" style="color:rgba(255,255,255,0.38); font-size:0.875rem; text-decoration:none; transition:color 0.15s;" onmouseover="this.style.color='rgba(255,255,255,0.75)'" onmouseout="this.style.color='rgba(255,255,255,0.38)'">Our Mission</a></li>
+            <li><a href="#" style="color:rgba(255,255,255,0.38); font-size:0.875rem; text-decoration:none; transition:color 0.15s;" onmouseover="this.style.color='rgba(255,255,255,0.75)'" onmouseout="this.style.color='rgba(255,255,255,0.38)'">Team</a></li>
+            <li><a href="#" style="color:rgba(255,255,255,0.38); font-size:0.875rem; text-decoration:none; transition:color 0.15s;" onmouseover="this.style.color='rgba(255,255,255,0.75)'" onmouseout="this.style.color='rgba(255,255,255,0.38)'">Press</a></li>
+            <li><a href="#" style="color:rgba(255,255,255,0.38); font-size:0.875rem; text-decoration:none; transition:color 0.15s;" onmouseover="this.style.color='rgba(255,255,255,0.75)'" onmouseout="this.style.color='rgba(255,255,255,0.38)'">Contact</a></li>
+          </ul>
+        </div>
+
+      </div>
+
+      <div style="border-top:1px solid rgba(255,255,255,0.08); padding-top:24px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+        <p style="color:rgba(255,255,255,0.25); font-size:0.75rem; margin:0;">&copy; 2026 Kind Nuts Encyclopedia. All rights reserved.</p>
+        <div style="display:flex; gap:24px;">
+          <a href="#" style="color:rgba(255,255,255,0.25); font-size:0.75rem; text-decoration:none; transition:color 0.15s;" onmouseover="this.style.color='rgba(255,255,255,0.55)'" onmouseout="this.style.color='rgba(255,255,255,0.25)'">Privacy Policy</a>
+          <a href="#" style="color:rgba(255,255,255,0.25); font-size:0.75rem; text-decoration:none; transition:color 0.15s;" onmouseover="this.style.color='rgba(255,255,255,0.55)'" onmouseout="this.style.color='rgba(255,255,255,0.25)'">Terms of Service</a>
+        </div>
+      </div>
+
+    </div>
+  </footer>
+
+</body>
+</html>
