@@ -198,6 +198,127 @@
     /* Color bars */
     .color-bar { display: flex; }
     .color-bar span { flex: 1; }
+
+    /* ─── HAMBURGER NAV ──────────────────────────────── */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 44px;
+      height: 44px;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      gap: 5px;
+      padding: 0;
+      border-radius: 8px;
+      transition: background 0.15s ease;
+    }
+    .hamburger:hover { background: rgba(26,26,26,0.06); }
+    .hamburger span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: #1A1A1A;
+      border-radius: 2px;
+      transition: transform 0.22s cubic-bezier(0.34,1.56,0.64,1), opacity 0.18s ease;
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* Mobile menu overlay */
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: #fff;
+      z-index: 99;
+      flex-direction: column;
+      padding: 88px 32px 40px;
+      gap: 0;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #1A1A1A;
+      text-decoration: none;
+      padding: 18px 0;
+      border-bottom: 1px solid rgba(26,26,26,0.08);
+      font-family: 'Anton', sans-serif;
+      letter-spacing: -0.01em;
+      transition: color 0.15s ease;
+    }
+    .mobile-menu a:hover { color: #E8A020; }
+    .mobile-menu .mobile-cta {
+      margin-top: 32px;
+      border: none;
+    }
+
+    /* ─── RESPONSIVE ─────────────────────────────────── */
+    @media (max-width: 768px) {
+      /* Nav */
+      .nav-links { display: none !important; }
+      .nav-join-btn { display: none !important; }
+      .hamburger { display: flex !important; }
+
+      /* Hero accent strips */
+      .hero-strips { display: none !important; }
+
+      /* Hero padding */
+      .hero-inner { padding: 64px 20px 56px !important; }
+
+      /* Hero stats: wrap compactly */
+      .hero-stats { gap: 20px !important; }
+      .hero-stats-divider { display: none !important; }
+
+      /* Categories: 2 cols */
+      .grid-cats { grid-template-columns: repeat(2, 1fr) !important; }
+
+      /* Articles: 1 col */
+      .grid-articles { grid-template-columns: 1fr !important; }
+
+      /* Community: stack */
+      .grid-community { grid-template-columns: 1fr !important; gap: 40px !important; }
+
+      /* Community stats: 2 cols (keep) */
+      .grid-stats { grid-template-columns: 1fr 1fr !important; }
+
+      /* Features: 1 col */
+      .grid-features { grid-template-columns: 1fr !important; }
+
+      /* Footer: 2 cols */
+      .grid-footer { grid-template-columns: 1fr 1fr !important; gap: 32px !important; }
+
+      /* Newsletter form: stack */
+      .form-newsletter { flex-direction: column !important; }
+      .email-input { width: 100% !important; }
+      .btn-primary.form-btn { width: 100% !important; text-align: center !important; }
+
+      /* Section padding */
+      .section-pad { padding: 64px 20px !important; }
+
+      /* Feat card padding */
+      .feat-card { padding: 24px !important; }
+    }
+
+    @media (max-width: 480px) {
+      /* Categories: 2 cols (keep) */
+      /* Footer: single col */
+      .grid-footer { grid-template-columns: 1fr !important; }
+      /* Community stats: 2 cols (keep) */
+    }
+
+    @media (min-width: 769px) and (max-width: 1024px) {
+      /* Categories: 3 cols on tablet */
+      .grid-cats { grid-template-columns: repeat(3, 1fr) !important; }
+      /* Articles: 2 cols on tablet */
+      .grid-articles { grid-template-columns: repeat(2, 1fr) !important; }
+      /* Features: 2 cols on tablet */
+      .grid-features { grid-template-columns: repeat(2, 1fr) !important; }
+    }
   </style>
 </head>
 <body>
@@ -211,16 +332,30 @@
   </div>
 
   <!-- ─── NAVIGATION ─────────────────────────────────────────── -->
+  <!-- Mobile menu overlay -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#encyclopedia" onclick="closeMobileMenu()">Encyclopedia</a>
+    <a href="#categories" onclick="closeMobileMenu()">Categories</a>
+    <a href="#community" onclick="closeMobileMenu()">Community</a>
+    <a href="#join" onclick="closeMobileMenu()">Recipes</a>
+    <a href="#join" class="mobile-cta btn-primary" onclick="closeMobileMenu()" style="text-decoration:none; display:inline-block; margin-top:32px; text-align:center;">Join Free</a>
+  </div>
+
   <nav style="background:#fff; border-bottom:1px solid rgba(26,26,26,0.08); position:sticky; top:0; z-index:100;">
     <div style="max-width:1200px; margin:0 auto; padding:0 24px; height:68px; display:flex; align-items:center; justify-content:space-between;">
       <img src="brand_assets/KindNuts-logo.png" alt="KIND Nuts" style="height:38px; width:auto; display:block;">
-      <div style="display:flex; align-items:center; gap:36px;">
+      <div class="nav-links" style="display:flex; align-items:center; gap:36px;">
         <a href="#encyclopedia" class="nav-link">Encyclopedia</a>
         <a href="#categories" class="nav-link">Categories</a>
         <a href="#community" class="nav-link">Community</a>
         <a href="#join" class="nav-link">Recipes</a>
       </div>
-      <a href="#join" class="btn-primary" style="padding:10px 22px; font-size:0.875rem; text-decoration:none; display:inline-block;">Join Free</a>
+      <a href="#join" class="nav-join-btn btn-primary" style="padding:10px 22px; font-size:0.875rem; text-decoration:none; display:inline-block;">Join Free</a>
+      <button class="hamburger" id="hamburger" aria-label="Open menu" onclick="toggleMobileMenu()">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
     </div>
   </nav>
 
@@ -236,20 +371,20 @@
                 pointer-events:none;"></div>
 
     <!-- Vertical color accent strips (right edge) -->
-    <div style="position:absolute; right:0; top:0; bottom:0; display:flex; width:16px; z-index:2;">
+    <div class="hero-strips" style="position:absolute; right:0; top:0; bottom:0; display:flex; width:16px; z-index:2;">
       <span style="flex:1; background:#00AEEF; opacity:0.85;"></span>
     </div>
-    <div style="position:absolute; right:16px; top:0; bottom:0; display:flex; width:10px;">
+    <div class="hero-strips" style="position:absolute; right:16px; top:0; bottom:0; display:flex; width:10px;">
       <span style="flex:1; background:#8CB43A; opacity:0.85;"></span>
     </div>
-    <div style="position:absolute; right:26px; top:0; bottom:0; display:flex; width:10px;">
+    <div class="hero-strips" style="position:absolute; right:26px; top:0; bottom:0; display:flex; width:10px;">
       <span style="flex:1; background:#CC2929; opacity:0.85;"></span>
     </div>
-    <div style="position:absolute; right:36px; top:0; bottom:0; display:flex; width:10px;">
+    <div class="hero-strips" style="position:absolute; right:36px; top:0; bottom:0; display:flex; width:10px;">
       <span style="flex:1; background:#E8A020; opacity:0.85;"></span>
     </div>
 
-    <div style="max-width:1200px; margin:0 auto; padding:96px 24px; position:relative; z-index:3;">
+    <div class="hero-inner" style="max-width:1200px; margin:0 auto; padding:96px 24px; position:relative; z-index:3;">
 
       <!-- Eyebrow -->
       <div class="afu d1" style="display:inline-flex; align-items:center; gap:10px; margin-bottom:20px;">
@@ -279,17 +414,17 @@
       </div>
 
       <!-- Stats row -->
-      <div class="afu d5" style="display:flex; flex-wrap:wrap; gap:32px; align-items:center;">
+      <div class="afu d5 hero-stats" style="display:flex; flex-wrap:wrap; gap:32px; align-items:center;">
         <div>
           <div class="font-display" style="color:#fff; font-size:2.25rem; letter-spacing:-0.02em; line-height:1;">400+</div>
           <div style="color:rgba(255,255,255,0.4); font-size:0.8125rem; margin-top:4px;">Nut Varieties</div>
         </div>
-        <div style="width:1px; height:40px; background:rgba(255,255,255,0.12);"></div>
+        <div class="hero-stats-divider" style="width:1px; height:40px; background:rgba(255,255,255,0.12);"></div>
         <div>
           <div class="font-display" style="color:#fff; font-size:2.25rem; letter-spacing:-0.02em; line-height:1;">12K+</div>
           <div style="color:rgba(255,255,255,0.4); font-size:0.8125rem; margin-top:4px;">Community Members</div>
         </div>
-        <div style="width:1px; height:40px; background:rgba(255,255,255,0.12);"></div>
+        <div class="hero-stats-divider" style="width:1px; height:40px; background:rgba(255,255,255,0.12);"></div>
         <div>
           <div class="font-display" style="color:#fff; font-size:2.25rem; letter-spacing:-0.02em; line-height:1;">2,800+</div>
           <div style="color:rgba(255,255,255,0.4); font-size:0.8125rem; margin-top:4px;">Articles & Recipes</div>
@@ -308,7 +443,7 @@
   </div>
 
   <!-- ─── CATEGORIES ─────────────────────────────────────────── -->
-  <section id="categories" style="padding:96px 24px; background:#F8F7F4;">
+  <section id="categories" class="section-pad" style="padding:96px 24px; background:#F8F7F4;">
     <div style="max-width:1200px; margin:0 auto;">
 
       <div style="display:flex; align-items:flex-end; justify-content:space-between; margin-bottom:48px; flex-wrap:wrap; gap:16px;">
@@ -321,7 +456,7 @@
         <a href="#" class="link-arrow" style="color:rgba(26,26,26,0.5);">View all categories <span>&rarr;</span></a>
       </div>
 
-      <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:16px;">
+      <div class="grid-cats" style="display:grid; grid-template-columns:repeat(4,1fr); gap:16px;">
 
         <!-- Almonds -->
         <a href="#" class="cat-card card-lift" style="background:#E8A020; box-shadow:0 4px 24px rgba(232,160,32,0.28), 0 1px 6px rgba(0,0,0,0.08);">
@@ -409,7 +544,7 @@
   </section>
 
   <!-- ─── FEATURED ARTICLES ──────────────────────────────────── -->
-  <section id="encyclopedia" style="padding:96px 24px; background:#fff;">
+  <section id="encyclopedia" class="section-pad" style="padding:96px 24px; background:#fff;">
     <div style="max-width:1200px; margin:0 auto;">
 
       <div style="display:flex; align-items:flex-end; justify-content:space-between; margin-bottom:48px; flex-wrap:wrap; gap:16px;">
@@ -422,7 +557,7 @@
         <a href="#" class="link-arrow" style="color:rgba(26,26,26,0.5);">Browse all <span>&rarr;</span></a>
       </div>
 
-      <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:24px;">
+      <div class="grid-articles" style="display:grid; grid-template-columns:repeat(3,1fr); gap:24px;">
 
         <!-- Article 1 -->
         <article class="card-lift" style="border-radius:20px; overflow:hidden; background:#F8F7F4; box-shadow:0 2px 16px rgba(0,0,0,0.06), 0 1px 4px rgba(0,0,0,0.04);">
@@ -474,9 +609,9 @@
   </section>
 
   <!-- ─── COMMUNITY BANNER ───────────────────────────────────── -->
-  <section id="community" class="dot-bg" style="background:#E8A020; position:relative; overflow:hidden;">
+  <section id="community" class="dot-bg section-pad" style="background:#E8A020; position:relative; overflow:hidden;">
     <div style="max-width:1200px; margin:0 auto; padding:80px 24px;">
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:center;">
+      <div class="grid-community" style="display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:center;">
 
         <div>
           <h2 class="font-display" style="font-size:clamp(2.75rem,5.5vw,5rem); letter-spacing:-0.03em; line-height:0.93; margin:0 0 20px; color:#1A1A1A;">
@@ -490,7 +625,7 @@
           </a>
         </div>
 
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
+        <div class="grid-stats" style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
           <div class="stat-box" style="background:#1A1A1A;">
             <div class="font-display" style="color:#E8A020; font-size:2.5rem; letter-spacing:-0.02em; line-height:1;">12K+</div>
             <div style="color:#fff; font-size:0.875rem; margin-top:4px;">Active Members</div>
@@ -514,7 +649,7 @@
   </section>
 
   <!-- ─── FEATURES ──────────────────────────────────────────── -->
-  <section style="padding:96px 24px; background:#1A1A1A;">
+  <section class="section-pad" style="padding:96px 24px; background:#1A1A1A;">
     <div style="max-width:1200px; margin:0 auto;">
 
       <div style="text-align:center; margin-bottom:56px;">
@@ -524,7 +659,7 @@
         </h2>
       </div>
 
-      <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:20px;">
+      <div class="grid-features" style="display:grid; grid-template-columns:repeat(3,1fr); gap:20px;">
 
         <div class="feat-card">
           <div style="width:52px; height:52px; border-radius:14px; background:rgba(232,160,32,0.12); display:flex; align-items:center; justify-content:center; margin-bottom:20px; font-size:1.625rem;">📚</div>
@@ -549,7 +684,7 @@
   </section>
 
   <!-- ─── JOIN / NEWSLETTER ─────────────────────────────────── -->
-  <section id="join" style="padding:96px 24px; background:#fff;">
+  <section id="join" class="section-pad" style="padding:96px 24px; background:#fff;">
     <div style="max-width:560px; margin:0 auto; text-align:center;">
 
       <div style="display:flex; justify-content:center; gap:6px; margin-bottom:24px;">
@@ -566,9 +701,9 @@
         Get weekly nut facts, new articles, community highlights, and exclusive recipes — straight to your inbox.
       </p>
 
-      <form style="display:flex; gap:10px; max-width:440px; margin:0 auto;" onsubmit="return false;">
+      <form class="form-newsletter" style="display:flex; gap:10px; max-width:440px; margin:0 auto;" onsubmit="return false;">
         <input type="email" placeholder="your@email.com" class="email-input" aria-label="Email address">
-        <button type="submit" class="btn-primary">Join Free</button>
+        <button type="submit" class="btn-primary form-btn">Join Free</button>
       </form>
       <p style="color:rgba(26,26,26,0.35); font-size:0.75rem; margin:14px 0 0;">No spam. Unsubscribe anytime.</p>
 
@@ -587,7 +722,7 @@
         <span style="background:#00AEEF;"></span>
       </div>
 
-      <div style="display:grid; grid-template-columns:1.4fr 1fr 1fr 1fr; gap:40px; margin-bottom:48px;">
+      <div class="grid-footer" style="display:grid; grid-template-columns:1.4fr 1fr 1fr 1fr; gap:40px; margin-bottom:48px;">
 
         <div>
           <img src="brand_assets/KindNuts-logo.png" alt="KIND Nuts" style="height:36px; width:auto; margin-bottom:14px; display:block;">
@@ -637,5 +772,19 @@
     </div>
   </footer>
 
+  <script>
+    function toggleMobileMenu() {
+      var menu = document.getElementById('mobileMenu');
+      var btn  = document.getElementById('hamburger');
+      var open = menu.classList.toggle('open');
+      btn.classList.toggle('open', open);
+      document.body.style.overflow = open ? 'hidden' : '';
+    }
+    function closeMobileMenu() {
+      document.getElementById('mobileMenu').classList.remove('open');
+      document.getElementById('hamburger').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+  </script>
 </body>
 </html>
