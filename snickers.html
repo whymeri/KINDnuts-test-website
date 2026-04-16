@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Snickers +Nuts — You're Not You When You're Hungry</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            's-red':    '#E31837',
+            's-navy':   '#1B1464',
+            's-brown':  '#3D1C02',
+            's-gold':   '#FDB813',
+            's-cream':  '#FFF8EE',
+            's-dark':   '#1A0A00',
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:ital,wght@0,400;0,600;0,700;0,800;1,700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; color: #1A0A00; margin: 0; }
+    .font-display { font-family: 'Anton', sans-serif; }
+
+    /* Noise texture */
+    .grain::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.045'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Animations */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .afu  { animation: fadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) both; }
+    .d1   { animation-delay: 0.05s; }
+    .d2   { animation-delay: 0.15s; }
+    .d3   { animation-delay: 0.28s; }
+    .d4   { animation-delay: 0.40s; }
+    .d5   { animation-delay: 0.54s; }
+
+    /* Card hover */
+    .card-lift {
+      transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.22s ease;
+    }
+    .card-lift:hover  { transform: translateY(-6px); }
+    .card-lift:active { transform: translateY(-2px) scale(0.99); }
+
+    /* Link arrow */
+    .link-arrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-weight: 700;
+      font-size: 0.8125rem;
+      transition: gap 0.18s ease;
+    }
+    .link-arrow:hover { gap: 9px; }
+
+    /* Nav link */
+    .nav-link {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: rgba(255,255,255,0.65);
+      transition: color 0.15s ease;
+      position: relative;
+      text-decoration: none;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -3px; left: 0; right: 0;
+      height: 2px;
+      background: #FDB813;
+      transform: scaleX(0);
+      transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .nav-link:hover { color: #fff; }
+    .nav-link:hover::after { transform: scaleX(1); }
+
+    /* Buttons */
+    .btn-primary {
+      background: #E31837;
+      color: #fff;
+      font-weight: 800;
+      font-size: 0.9375rem;
+      padding: 15px 32px;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      white-space: nowrap;
+      text-decoration: none;
+      display: inline-block;
+      font-family: 'Inter', sans-serif;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      transition: background 0.15s ease, transform 0.12s ease, box-shadow 0.15s ease;
+      box-shadow: 0 6px 24px rgba(227, 24, 55, 0.4), 0 2px 6px rgba(0,0,0,0.2);
+    }
+    .btn-primary:hover  { background: #c8152f; box-shadow: 0 8px 32px rgba(227, 24, 55, 0.55); }
+    .btn-primary:active { transform: scale(0.97); }
+
+    .btn-gold {
+      background: #FDB813;
+      color: #1B1464;
+      font-weight: 800;
+      font-size: 0.9375rem;
+      padding: 15px 32px;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      white-space: nowrap;
+      text-decoration: none;
+      display: inline-block;
+      font-family: 'Inter', sans-serif;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      transition: background 0.15s ease, transform 0.12s ease;
+      box-shadow: 0 6px 24px rgba(253, 184, 19, 0.4);
+    }
+    .btn-gold:hover  { background: #e8a800; }
+    .btn-gold:active { transform: scale(0.97); }
+
+    .btn-ghost {
+      background: transparent;
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.9375rem;
+      padding: 14px 30px;
+      border-radius: 6px;
+      border: 2px solid rgba(255,255,255,0.3);
+      cursor: pointer;
+      white-space: nowrap;
+      text-decoration: none;
+      display: inline-block;
+      font-family: 'Inter', sans-serif;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      transition: border-color 0.15s ease, background 0.15s ease, transform 0.12s ease;
+    }
+    .btn-ghost:hover  { border-color: #FDB813; color: #FDB813; }
+    .btn-ghost:active { transform: scale(0.97); }
+
+    /* Red stripe bar */
+    .stripe-bar { display: flex; }
+    .stripe-bar span { flex: 1; }
+
+    /* Diagonal stripe pattern */
+    .stripe-bg {
+      background-image: repeating-linear-gradient(
+        -45deg,
+        transparent,
+        transparent 10px,
+        rgba(255,255,255,0.03) 10px,
+        rgba(255,255,255,0.03) 20px
+      );
+    }
+
+    /* Category card */
+    .nut-card {
+      border-radius: 12px;
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 24px;
+      aspect-ratio: 1;
+      text-decoration: none;
+    }
+    .nut-card .nc-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0) 55%);
+    }
+    .nut-card .nc-content { position: relative; z-index: 2; }
+    .nut-card .nc-icon {
+      font-size: 2.5rem;
+      display: block;
+      margin-bottom: 8px;
+      transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .nut-card:hover .nc-icon { transform: scale(1.18) rotate(-5deg); }
+
+    /* Feature pill */
+    .feat-pill {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.09);
+      border-radius: 12px;
+      padding: 24px;
+      transition: background 0.2s ease, border-color 0.2s ease;
+    }
+    .feat-pill:hover {
+      background: rgba(255,255,255,0.08);
+      border-color: rgba(253,184,19,0.3);
+    }
+
+    /* Stat card */
+    .stat-card {
+      border-radius: 10px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    /* Email input */
+    .email-input {
+      flex: 1;
+      border: 2px solid rgba(26,10,0,0.15);
+      border-radius: 6px;
+      padding: 14px 20px;
+      font-size: 0.9375rem;
+      outline: none;
+      transition: border-color 0.18s ease, box-shadow 0.18s ease;
+      font-family: 'Inter', sans-serif;
+      background: #fff;
+    }
+    .email-input:focus {
+      border-color: #E31837;
+      box-shadow: 0 0 0 3px rgba(227,24,55,0.15);
+    }
+
+    /* Hamburger */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 44px; height: 44px;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      gap: 5px; padding: 0;
+      border-radius: 6px;
+      transition: background 0.15s ease;
+    }
+    .hamburger:hover { background: rgba(255,255,255,0.08); }
+    .hamburger span {
+      display: block;
+      width: 22px; height: 2px;
+      background: #fff;
+      border-radius: 2px;
+      transition: transform 0.22s cubic-bezier(0.34,1.56,0.64,1), opacity 0.18s ease;
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* Mobile menu */
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: #1B1464;
+      z-index: 99;
+      flex-direction: column;
+      padding: 96px 32px 40px;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: #fff;
+      text-decoration: none;
+      padding: 18px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      font-family: 'Anton', sans-serif;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      transition: color 0.15s ease;
+    }
+    .mobile-menu a:hover { color: #FDB813; }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .nav-links, .nav-cta { display: none !important; }
+      .hamburger { display: flex !important; }
+      .hero-inner { padding: 64px 20px 56px !important; }
+      .hero-strips { display: none !important; }
+      .grid-nuts { grid-template-columns: repeat(2, 1fr) !important; }
+      .grid-features { grid-template-columns: 1fr !important; }
+      .grid-stats { grid-template-columns: 1fr 1fr !important; }
+      .grid-banner { grid-template-columns: 1fr !important; gap: 40px !important; }
+      .grid-footer { grid-template-columns: 1fr 1fr !important; gap: 32px !important; }
+      .form-row { flex-direction: column !important; }
+      .email-input { width: 100% !important; }
+      .section-pad { padding: 64px 20px !important; }
+    }
+    @media (max-width: 480px) {
+      .grid-footer { grid-template-columns: 1fr !important; }
+    }
+    @media (min-width: 769px) and (max-width: 1024px) {
+      .grid-nuts { grid-template-columns: repeat(3, 1fr) !important; }
+      .grid-features { grid-template-columns: repeat(2, 1fr) !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top stripe -->
+  <div class="stripe-bar" style="height:5px;">
+    <span style="background:#E31837; flex:3;"></span>
+    <span style="background:#FDB813; flex:1;"></span>
+  </div>
+
+  <!-- Mobile menu -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#nuts" onclick="closeMobileMenu()">The Nuts</a>
+    <a href="#science" onclick="closeMobileMenu()">Science</a>
+    <a href="#community" onclick="closeMobileMenu()">Community</a>
+    <a href="snickers-quiz.html" onclick="closeMobileMenu()" style="color:#FDB813;">Find My Match</a>
+  </div>
+
+  <!-- ─── NAV ──────────────────────────────────────────────────────── -->
+  <nav style="background:#1B1464; position:sticky; top:0; z-index:100; border-bottom:1px solid rgba(255,255,255,0.08);">
+    <div style="max-width:1200px; margin:0 auto; padding:0 24px; height:72px; display:flex; align-items:center; justify-content:space-between;">
+      <a href="snickers.html">
+        <img src="brand_assets/snickers/SnickersNuts-logo.png" alt="Snickers +Nuts" style="height:44px; width:auto; display:block;">
+      </a>
+      <div class="nav-links" style="display:flex; align-items:center; gap:36px;">
+        <a href="#nuts"      class="nav-link">The Nuts</a>
+        <a href="#science"   class="nav-link">Science</a>
+        <a href="#community" class="nav-link">Community</a>
+      </div>
+      <a href="snickers-quiz.html" class="nav-cta btn-gold" style="padding:10px 22px; font-size:0.8125rem;">Find My Match</a>
+      <button class="hamburger" id="hamburger" aria-label="Open menu" onclick="toggleMobileMenu()">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ─── HERO ─────────────────────────────────────────────────────── -->
+  <section class="grain" style="background:#1B1464; position:relative; overflow:hidden; min-height:92vh; display:flex; align-items:center;">
+
+    <!-- Ambient glow -->
+    <div style="position:absolute; top:-80px; left:-60px; width:700px; height:700px; border-radius:50%;
+                background:radial-gradient(circle, rgba(227,24,55,0.18) 0%, transparent 70%);
+                pointer-events:none;"></div>
+    <div style="position:absolute; bottom:-120px; right:-40px; width:600px; height:600px; border-radius:50%;
+                background:radial-gradient(circle, rgba(253,184,19,0.12) 0%, transparent 70%);
+                pointer-events:none;"></div>
+
+    <!-- Diagonal stripes -->
+    <div class="stripe-bg" style="position:absolute; inset:0; pointer-events:none; z-index:1;"></div>
+
+    <!-- Right accent bars -->
+    <div class="hero-strips" style="position:absolute; right:0; top:0; bottom:0; width:8px; background:#E31837; z-index:2; opacity:0.9;"></div>
+    <div class="hero-strips" style="position:absolute; right:8px; top:0; bottom:0; width:5px; background:#FDB813; z-index:2; opacity:0.9;"></div>
+    <div class="hero-strips" style="position:absolute; right:13px; top:0; bottom:0; width:5px; background:#3D1C02; z-index:2; opacity:0.9;"></div>
+
+    <div class="hero-inner" style="max-width:1200px; margin:0 auto; padding:100px 24px; position:relative; z-index:3; width:100%;">
+
+      <!-- Eyebrow -->
+      <div class="afu d1" style="display:inline-flex; align-items:center; gap:10px; margin-bottom:22px;">
+        <div style="width:28px; height:5px; border-radius:2px; background:#E31837;"></div>
+        <span style="color:rgba(255,255,255,0.55); font-size:0.6875rem; font-weight:700; letter-spacing:0.16em; text-transform:uppercase;">Powered by Peanuts</span>
+      </div>
+
+      <!-- Headline -->
+      <h1 class="font-display afu d2" style="color:#fff; font-size:clamp(3.75rem, 10vw, 8.5rem); line-height:0.9; letter-spacing:-0.01em; margin:0 0 10px;">
+        YOU'RE NOT
+      </h1>
+      <h1 class="font-display afu d3" style="color:#FDB813; font-size:clamp(3.75rem, 10vw, 8.5rem); line-height:0.9; letter-spacing:-0.01em; margin:0 0 32px;">
+        YOU WHEN<br>YOU'RE HUNGRY.
+      </h1>
+
+      <!-- Sub -->
+      <p class="afu d4" style="color:rgba(255,255,255,0.65); font-size:1.125rem; line-height:1.75; max-width:500px; margin:0 0 44px;">
+        Snickers +Nuts delivers the bold crunch of real peanuts, packed with protein and healthy fats, to keep you sharp, satisfied, and fully yourself.
+      </p>
+
+      <!-- CTAs -->
+      <div class="afu d5" style="display:flex; flex-wrap:wrap; gap:14px; margin-bottom:72px;">
+        <a href="snickers-quiz.html" class="btn-primary">Find My Nut Match &rarr;</a>
+        <a href="#science" class="btn-ghost">The Science</a>
+      </div>
+
+      <!-- Stats -->
+      <div class="afu d5" style="display:flex; flex-wrap:wrap; gap:48px; align-items:center;">
+        <div>
+          <div class="font-display" style="color:#FDB813; font-size:2.5rem; letter-spacing:-0.02em; line-height:1;">28g</div>
+          <div style="color:rgba(255,255,255,0.4); font-size:0.8125rem; margin-top:4px;">Protein per serving</div>
+        </div>
+        <div style="width:1px; height:40px; background:rgba(255,255,255,0.1);"></div>
+        <div>
+          <div class="font-display" style="color:#FDB813; font-size:2.5rem; letter-spacing:-0.02em; line-height:1;">6</div>
+          <div style="color:rgba(255,255,255,0.4); font-size:0.8125rem; margin-top:4px;">Nut Varieties</div>
+        </div>
+        <div style="width:1px; height:40px; background:rgba(255,255,255,0.1);"></div>
+        <div>
+          <div class="font-display" style="color:#FDB813; font-size:2.5rem; letter-spacing:-0.02em; line-height:1;">100%</div>
+          <div style="color:rgba(255,255,255,0.4); font-size:0.8125rem; margin-top:4px;">Satisfaction guaranteed</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Bottom stripe -->
+  <div class="stripe-bar" style="height:6px;">
+    <span style="background:#E31837; flex:3;"></span>
+    <span style="background:#FDB813; flex:1;"></span>
+  </div>
+
+  <!-- ─── THE NUTS ───────────────────────────────────────────────────── -->
+  <section id="nuts" class="section-pad" style="padding:96px 24px; background:#FFF8EE;">
+    <div style="max-width:1200px; margin:0 auto;">
+
+      <div style="display:flex; align-items:flex-end; justify-content:space-between; margin-bottom:52px; flex-wrap:wrap; gap:16px;">
+        <div>
+          <p style="color:#E31837; font-size:0.6875rem; font-weight:700; letter-spacing:0.16em; text-transform:uppercase; margin:0 0 10px;">The Lineup</p>
+          <h2 class="font-display" style="font-size:clamp(2.25rem, 5vw, 4rem); letter-spacing:-0.01em; line-height:0.93; margin:0; color:#1B1464;">
+            MEET THE<br>CREW.
+          </h2>
+        </div>
+        <a href="snickers-quiz.html" class="link-arrow" style="color:rgba(26,10,0,0.45);">Find your match <span>&rarr;</span></a>
+      </div>
+
+      <div class="grid-nuts" style="display:grid; grid-template-columns:repeat(4,1fr); gap:16px;">
+
+        <a href="#" class="nut-card card-lift" style="background:#E31837; box-shadow:0 4px 24px rgba(227,24,55,0.3);">
+          <div class="nc-overlay"></div>
+          <div class="nc-content">
+            <span class="nc-icon">🥜</span>
+            <div class="font-display" style="color:#fff; font-size:1.25rem; letter-spacing:0.01em;">PEANUTS</div>
+            <div style="color:rgba(255,255,255,0.65); font-size:0.75rem; margin-top:3px;">The OG · High protein</div>
+          </div>
+        </a>
+
+        <a href="#" class="nut-card card-lift" style="background:#1B1464; box-shadow:0 4px 24px rgba(27,20,100,0.3);">
+          <div class="nc-overlay"></div>
+          <div class="nc-content">
+            <span class="nc-icon">🌰</span>
+            <div class="font-display" style="color:#fff; font-size:1.25rem; letter-spacing:0.01em;">CASHEWS</div>
+            <div style="color:rgba(255,255,255,0.65); font-size:0.75rem; margin-top:3px;">Creamy · Rich in iron</div>
+          </div>
+        </a>
+
+        <a href="#" class="nut-card card-lift" style="background:#3D1C02; box-shadow:0 4px 24px rgba(61,28,2,0.35);">
+          <div class="nc-overlay"></div>
+          <div class="nc-content">
+            <span class="nc-icon">🪨</span>
+            <div class="font-display" style="color:#fff; font-size:1.25rem; letter-spacing:0.01em;">ALMONDS</div>
+            <div style="color:rgba(255,255,255,0.65); font-size:0.75rem; margin-top:3px;">Crunchy · Vitamin E</div>
+          </div>
+        </a>
+
+        <a href="#" class="nut-card card-lift" style="background:#FDB813; box-shadow:0 4px 24px rgba(253,184,19,0.35);">
+          <div class="nc-overlay"></div>
+          <div class="nc-content">
+            <span class="nc-icon">🌿</span>
+            <div class="font-display" style="color:#1B1464; font-size:1.25rem; letter-spacing:0.01em;">PISTACHIOS</div>
+            <div style="color:rgba(27,20,100,0.65); font-size:0.75rem; margin-top:3px;">Earthy · Antioxidants</div>
+          </div>
+        </a>
+
+        <a href="#" class="nut-card card-lift" style="background:#1B1464; box-shadow:0 4px 24px rgba(27,20,100,0.3);">
+          <div class="nc-overlay"></div>
+          <div class="nc-content">
+            <span class="nc-icon">🌰</span>
+            <div class="font-display" style="color:#fff; font-size:1.25rem; letter-spacing:0.01em;">WALNUTS</div>
+            <div style="color:rgba(255,255,255,0.65); font-size:0.75rem; margin-top:3px;">Brain food · Omega-3</div>
+          </div>
+        </a>
+
+        <a href="#" class="nut-card card-lift" style="background:#3D1C02; box-shadow:0 4px 24px rgba(61,28,2,0.35);">
+          <div class="nc-overlay"></div>
+          <div class="nc-content">
+            <span class="nc-icon">🌰</span>
+            <div class="font-display" style="color:#fff; font-size:1.25rem; letter-spacing:0.01em;">HAZELNUTS</div>
+            <div style="color:rgba(255,255,255,0.65); font-size:0.75rem; margin-top:3px;">Smooth · Folate rich</div>
+          </div>
+        </a>
+
+        <a href="#" class="nut-card card-lift" style="background:#E31837; box-shadow:0 4px 24px rgba(227,24,55,0.3);">
+          <div class="nc-overlay"></div>
+          <div class="nc-content">
+            <span class="nc-icon">🌰</span>
+            <div class="font-display" style="color:#fff; font-size:1.25rem; letter-spacing:0.01em;">PECANS</div>
+            <div style="color:rgba(255,255,255,0.65); font-size:0.75rem; margin-top:3px;">Buttery · Zinc boost</div>
+          </div>
+        </a>
+
+        <!-- CTA card -->
+        <a href="snickers-quiz.html" class="nut-card card-lift" style="background:#fff; border:2px dashed rgba(27,20,100,0.15); box-shadow:0 2px 12px rgba(0,0,0,0.05); justify-content:center; align-items:center; aspect-ratio:1;">
+          <div style="text-align:center;">
+            <div style="width:52px; height:52px; border-radius:8px; background:#E31837; display:flex; align-items:center; justify-content:center; margin:0 auto 12px;">
+              <span style="color:#fff; font-size:1.75rem; font-weight:900; line-height:1;">?</span>
+            </div>
+            <div class="font-display" style="font-size:1rem; letter-spacing:0.01em; color:#1B1464;">YOUR<br>MATCH</div>
+            <div style="color:rgba(27,20,100,0.45); font-size:0.75rem; margin-top:4px;">Take the quiz</div>
+          </div>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── SCIENCE / FEATURES ────────────────────────────────────────── -->
+  <section id="science" class="section-pad stripe-bg" style="padding:96px 24px; background:#1B1464; position:relative;">
+    <div style="max-width:1200px; margin:0 auto; position:relative; z-index:2;">
+
+      <div style="text-align:center; margin-bottom:60px;">
+        <p style="color:#FDB813; font-size:0.6875rem; font-weight:700; letter-spacing:0.16em; text-transform:uppercase; margin:0 0 12px;">Backed by Science</p>
+        <h2 class="font-display" style="color:#fff; font-size:clamp(2.25rem,5vw,4rem); letter-spacing:-0.01em; line-height:0.93; margin:0;">
+          REAL FOOD.<br>REAL RESULTS.
+        </h2>
+      </div>
+
+      <div class="grid-features" style="display:grid; grid-template-columns:repeat(3,1fr); gap:16px;">
+
+        <div class="feat-pill">
+          <div style="width:52px; height:52px; border-radius:10px; background:#E31837; display:flex; align-items:center; justify-content:center; font-size:1.5rem; flex-shrink:0;">💪</div>
+          <div>
+            <h3 class="font-display" style="color:#fff; font-size:1.0625rem; letter-spacing:0.01em; margin:0 0 10px;">SUSTAINED ENERGY</h3>
+            <p style="color:rgba(255,255,255,0.5); font-size:0.875rem; line-height:1.75; margin:0;">Healthy fats and protein slow digestion, giving you hours of steady fuel without the crash.</p>
+          </div>
+        </div>
+
+        <div class="feat-pill">
+          <div style="width:52px; height:52px; border-radius:10px; background:#FDB813; display:flex; align-items:center; justify-content:center; font-size:1.5rem; flex-shrink:0;">🧠</div>
+          <div>
+            <h3 class="font-display" style="color:#fff; font-size:1.0625rem; letter-spacing:0.01em; margin:0 0 10px;">BRAIN POWER</h3>
+            <p style="color:rgba(255,255,255,0.5); font-size:0.875rem; line-height:1.75; margin:0;">Omega-3s from walnuts and antioxidants from pistachios support cognitive function and focus.</p>
+          </div>
+        </div>
+
+        <div class="feat-pill">
+          <div style="width:52px; height:52px; border-radius:10px; background:#3D1C02; display:flex; align-items:center; justify-content:center; font-size:1.5rem; flex-shrink:0;">⚡</div>
+          <div>
+            <h3 class="font-display" style="color:#fff; font-size:1.0625rem; letter-spacing:0.01em; margin:0 0 10px;">ELECTROLYTE BOOST</h3>
+            <p style="color:rgba(255,255,255,0.5); font-size:0.875rem; line-height:1.75; margin:0;">Natural magnesium, potassium, and sodium in nuts help replenish what you lose during the day.</p>
+          </div>
+        </div>
+
+        <div class="feat-pill">
+          <div style="width:52px; height:52px; border-radius:10px; background:#FDB813; display:flex; align-items:center; justify-content:center; font-size:1.5rem; flex-shrink:0;">❤️</div>
+          <div>
+            <h3 class="font-display" style="color:#fff; font-size:1.0625rem; letter-spacing:0.01em; margin:0 0 10px;">HEART HEALTH</h3>
+            <p style="color:rgba(255,255,255,0.5); font-size:0.875rem; line-height:1.75; margin:0;">Clinical studies show daily nut consumption reduces LDL cholesterol and supports cardiovascular health.</p>
+          </div>
+        </div>
+
+        <div class="feat-pill">
+          <div style="width:52px; height:52px; border-radius:10px; background:#E31837; display:flex; align-items:center; justify-content:center; font-size:1.5rem; flex-shrink:0;">💯</div>
+          <div>
+            <h3 class="font-display" style="color:#fff; font-size:1.0625rem; letter-spacing:0.01em; margin:0 0 10px;">PROTEIN PACKED</h3>
+            <p style="color:rgba(255,255,255,0.5); font-size:0.875rem; line-height:1.75; margin:0;">Up to 28g of plant protein per serving. Build muscle, stay full, perform — all from a single handful.</p>
+          </div>
+        </div>
+
+        <div class="feat-pill">
+          <div style="width:52px; height:52px; border-radius:10px; background:#3D1C02; display:flex; align-items:center; justify-content:center; font-size:1.5rem; flex-shrink:0;">🌱</div>
+          <div>
+            <h3 class="font-display" style="color:#fff; font-size:1.0625rem; letter-spacing:0.01em; margin:0 0 10px;">CLEAN INGREDIENTS</h3>
+            <p style="color:rgba(255,255,255,0.5); font-size:0.875rem; line-height:1.75; margin:0;">No artificial flavors, no fillers. Just real nuts, expertly sourced and blended to match your goals.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── COMMUNITY BANNER ──────────────────────────────────────────── -->
+  <section id="community" class="section-pad" style="padding:0; background:#E31837; position:relative; overflow:hidden;">
+    <div style="max-width:1200px; margin:0 auto; padding:80px 24px;">
+      <div class="grid-banner" style="display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:center;">
+
+        <div>
+          <p style="color:rgba(255,255,255,0.65); font-size:0.6875rem; font-weight:700; letter-spacing:0.16em; text-transform:uppercase; margin:0 0 14px;">The Snickers Community</p>
+          <h2 class="font-display" style="color:#fff; font-size:clamp(2.75rem,6vw,5.25rem); letter-spacing:-0.01em; line-height:0.9; margin:0 0 22px;">
+            FORGOT<br>SOMETHING?
+          </h2>
+          <p style="color:rgba(255,255,255,0.75); font-size:1.0625rem; line-height:1.75; margin:0 0 32px; max-width:420px;">
+            Join 50,000+ nut enthusiasts who never skip their daily handful. Share tips, recipes, and prove that the best snack is always the one that's right for you.
+          </p>
+          <a href="#join" class="btn-gold">Join the Community &rarr;</a>
+        </div>
+
+        <div class="grid-stats" style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+          <div class="stat-card" style="background:#fff;">
+            <div class="font-display" style="color:#E31837; font-size:2.5rem; letter-spacing:-0.02em; line-height:1;">50K+</div>
+            <div style="color:rgba(26,10,0,0.55); font-size:0.875rem;">Community Members</div>
+          </div>
+          <div class="stat-card" style="background:#1B1464;">
+            <div class="font-display" style="color:#FDB813; font-size:2.5rem; letter-spacing:-0.02em; line-height:1;">6</div>
+            <div style="color:rgba(255,255,255,0.6); font-size:0.875rem;">Nut Varieties</div>
+          </div>
+          <div class="stat-card" style="background:#3D1C02;">
+            <div class="font-display" style="color:#FDB813; font-size:2.5rem; letter-spacing:-0.02em; line-height:1;">28g</div>
+            <div style="color:rgba(255,255,255,0.6); font-size:0.875rem;">Max Protein/Serving</div>
+          </div>
+          <div class="stat-card" style="background:#FDB813;">
+            <div class="font-display" style="color:#1B1464; font-size:2.5rem; letter-spacing:-0.02em; line-height:1;">100%</div>
+            <div style="color:rgba(27,20,100,0.65); font-size:0.875rem;">Natural Ingredients</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── QUIZ CTA ───────────────────────────────────────────────────── -->
+  <section style="background:#3D1C02; padding:96px 24px; position:relative; overflow:hidden;">
+    <!-- Background glow -->
+    <div style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:800px; height:800px; border-radius:50%;
+                background:radial-gradient(circle, rgba(253,184,19,0.1) 0%, transparent 70%); pointer-events:none;"></div>
+
+    <div style="max-width:640px; margin:0 auto; text-align:center; position:relative; z-index:2;">
+      <img src="brand_assets/snickers/SnickersNuts-logo.png" alt="Snickers +Nuts" style="height:56px; width:auto; margin:0 auto 28px; display:block;">
+      <h2 class="font-display" style="color:#fff; font-size:clamp(2.5rem,5.5vw,4.5rem); letter-spacing:-0.01em; line-height:0.92; margin:0 0 20px;">
+        WHICH NUT<br>ARE <span style="color:#FDB813;">YOU?</span>
+      </h2>
+      <p style="color:rgba(255,255,255,0.6); font-size:1.0625rem; line-height:1.75; margin:0 0 36px;">
+        Take our 7-question assessment and we'll match you to the perfect Snickers +Nuts blend based on your lifestyle, goals, and cravings.
+      </p>
+      <a href="snickers-quiz.html" class="btn-primary" style="font-size:1rem; padding:18px 40px;">Start the Quiz &rarr;</a>
+      <p style="color:rgba(255,255,255,0.3); font-size:0.8125rem; margin:16px 0 0;">Takes about 2 minutes</p>
+    </div>
+  </section>
+
+  <!-- ─── NEWSLETTER ─────────────────────────────────────────────────── -->
+  <section id="join" style="background:#FFF8EE; padding:96px 24px;">
+    <div style="max-width:560px; margin:0 auto; text-align:center;">
+
+      <div style="display:flex; justify-content:center; gap:6px; margin-bottom:24px;">
+        <span style="width:12px; height:5px; border-radius:2px; background:#E31837; display:block;"></span>
+        <span style="width:12px; height:5px; border-radius:2px; background:#1B1464; display:block;"></span>
+        <span style="width:12px; height:5px; border-radius:2px; background:#3D1C02; display:block;"></span>
+        <span style="width:12px; height:5px; border-radius:2px; background:#FDB813; display:block;"></span>
+      </div>
+
+      <h2 class="font-display" style="color:#1B1464; font-size:clamp(2rem,4.5vw,3.75rem); letter-spacing:-0.01em; line-height:0.93; margin:0 0 16px;">
+        STAY<br>SATISFIED.
+      </h2>
+      <p style="color:rgba(26,10,0,0.55); font-size:1.0625rem; line-height:1.75; margin:0 0 32px;">
+        Nut science, new blends, community stories, and exclusive drops — straight to your inbox.
+      </p>
+
+      <form class="form-row" style="display:flex; gap:10px; max-width:460px; margin:0 auto;" onsubmit="return false;">
+        <input type="email" placeholder="your@email.com" class="email-input" aria-label="Email address">
+        <button type="submit" class="btn-primary" style="white-space:nowrap;">Join Free</button>
+      </form>
+      <p style="color:rgba(26,10,0,0.3); font-size:0.75rem; margin:14px 0 0;">No spam. Unsubscribe anytime.</p>
+
+    </div>
+  </section>
+
+  <!-- ─── FOOTER ─────────────────────────────────────────────────────── -->
+  <footer style="background:#1A0A00; padding:64px 24px 40px;">
+    <div style="max-width:1200px; margin:0 auto;">
+
+      <div class="stripe-bar" style="height:4px; border-radius:2px; overflow:hidden; margin-bottom:52px;">
+        <span style="background:#E31837; flex:3;"></span>
+        <span style="background:#FDB813; flex:1;"></span>
+      </div>
+
+      <div class="grid-footer" style="display:grid; grid-template-columns:1.5fr 1fr 1fr 1fr; gap:40px; margin-bottom:52px;">
+
+        <div>
+          <img src="brand_assets/snickers/SnickersNuts-logo.png" alt="Snickers +Nuts" style="height:38px; width:auto; margin-bottom:16px; display:block;">
+          <p style="color:rgba(255,255,255,0.3); font-size:0.875rem; line-height:1.7; margin:0; max-width:200px;">Real nuts. Real results. You're not you when you're hungry.</p>
+        </div>
+
+        <div>
+          <h4 style="color:#FDB813; font-size:0.75rem; font-weight:700; margin:0 0 16px; letter-spacing:0.1em; text-transform:uppercase;">The Nuts</h4>
+          <ul style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:10px;">
+            <li><a href="#" style="color:rgba(255,255,255,0.35); font-size:0.875rem; text-decoration:none; transition:color 0.15s;" onmouseover="this.style.color='rgba(255,255,255,0.75)'" onmouseout="this.style.color='rgba(255,255,255,0.35)'">Peanuts</a></li>
+            <li><a href="#" style="color:rgba(255,255,255,0.35); font-size:0.875rem; text-decoration:none; transition:color 0.15s;" onmouseover="this.style.color='rgba(255,255,255,0.75)'" onmouseout="this.style.color='rgba(255,255,255,0.35)'">Cashews</a></li>
+            <li><a href="#" style="color:rgba(255,255,255,0.35); font-size:0.875rem; text-decoration:none; transition:color 0.15s;" onmouseover="this.style.color='rgba(255,255,255,0.75)'" onmouseout="this.style.color='rgba(255,255,255,0.35)'">Almonds</a></li>
+            <li><a href="#" style="color:rgba(255,255,255,0.35); font-size:0.875rem; text-decoration:none; transition:color 0.15s;" onmouseover="this.style.color='rgba(255,255,255,0.75)'" onmouseout="this.style.color='rgba(255,255,255,0.35)'">All Varieties</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 style="color:#FDB813; font-size:0.75rem; font-weight:700; margin:0 0 16px; letter-spacing:0.1em; text-transform:uppercase;">Discover</h4>
+          <ul style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:10px;">
+            <li><a href="snickers-quiz.html" style="color:rgba(255,255,255,0.35); font-size:0.875rem; text-decoration:none; transition:color 0.15s;" onmouseover="this.style.color='rgba(255,255,255,0.75)'" onmouseout="this.style.color='rgba(255,255,255,0.35)'">Nut Quiz</a></li>
+            <li><a href="#science" style="color:rgba(255,255,255,0.35); font-size:0.875rem; text-decoration:none; transition:color 0.15s;" onmouseover="this.style.color='rgba(255,255,255,0.75)'" onmouseout="this.style.color='rgba(255,255,255,0.35)'">The Science</a></li>
+            <li><a href="#" style="color:rgba(255,255,255,0.35); font-size:0.875rem; text-decoration:none; transition:color 0.15s;" onmouseover="this.style.color='rgba(255,255,255,0.75)'" onmouseout="this.style.color='rgba(255,255,255,0.35)'">Recipes</a></li>
+            <li><a href="#" style="color:rgba(255,255,255,0.35); font-size:0.875rem; text-decoration:none; transition:color 0.15s;" onmouseover="this.style.color='rgba(255,255,255,0.75)'" onmouseout="this.style.color='rgba(255,255,255,0.35)'">Blog</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 style="color:#FDB813; font-size:0.75rem; font-weight:700; margin:0 0 16px; letter-spacing:0.1em; text-transform:uppercase;">Mars</h4>
+          <ul style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:10px;">
+            <li><a href="#" style="color:rgba(255,255,255,0.35); font-size:0.875rem; text-decoration:none; transition:color 0.15s;" onmouseover="this.style.color='rgba(255,255,255,0.75)'" onmouseout="this.style.color='rgba(255,255,255,0.35)'">About Snickers</a></li>
+            <li><a href="#" style="color:rgba(255,255,255,0.35); font-size:0.875rem; text-decoration:none; transition:color 0.15s;" onmouseover="this.style.color='rgba(255,255,255,0.75)'" onmouseout="this.style.color='rgba(255,255,255,0.35)'">Sustainability</a></li>
+            <li><a href="#" style="color:rgba(255,255,255,0.35); font-size:0.875rem; text-decoration:none; transition:color 0.15s;" onmouseover="this.style.color='rgba(255,255,255,0.75)'" onmouseout="this.style.color='rgba(255,255,255,0.35)'">Press</a></li>
+            <li><a href="#" style="color:rgba(255,255,255,0.35); font-size:0.875rem; text-decoration:none; transition:color 0.15s;" onmouseover="this.style.color='rgba(255,255,255,0.75)'" onmouseout="this.style.color='rgba(255,255,255,0.35)'">Contact</a></li>
+          </ul>
+        </div>
+
+      </div>
+
+      <div style="border-top:1px solid rgba(255,255,255,0.07); padding-top:24px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+        <p style="color:rgba(255,255,255,0.2); font-size:0.75rem; margin:0;">&copy; 2026 Mars Snacking. All rights reserved.</p>
+        <div style="display:flex; gap:24px;">
+          <a href="#" style="color:rgba(255,255,255,0.2); font-size:0.75rem; text-decoration:none;" onmouseover="this.style.color='rgba(255,255,255,0.5)'" onmouseout="this.style.color='rgba(255,255,255,0.2)'">Privacy Policy</a>
+          <a href="#" style="color:rgba(255,255,255,0.2); font-size:0.75rem; text-decoration:none;" onmouseover="this.style.color='rgba(255,255,255,0.5)'" onmouseout="this.style.color='rgba(255,255,255,0.2)'">Terms of Use</a>
+          <a href="#" style="color:rgba(255,255,255,0.2); font-size:0.75rem; text-decoration:none;" onmouseover="this.style.color='rgba(255,255,255,0.5)'" onmouseout="this.style.color='rgba(255,255,255,0.2)'">Accessibility</a>
+        </div>
+      </div>
+
+    </div>
+  </footer>
+
+  <script>
+    function toggleMobileMenu() {
+      var menu = document.getElementById('mobileMenu');
+      var btn  = document.getElementById('hamburger');
+      var open = menu.classList.toggle('open');
+      btn.classList.toggle('open', open);
+      document.body.style.overflow = open ? 'hidden' : '';
+    }
+    function closeMobileMenu() {
+      document.getElementById('mobileMenu').classList.remove('open');
+      document.getElementById('hamburger').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+  </script>
+</body>
+</html>
