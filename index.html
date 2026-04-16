@@ -108,13 +108,22 @@
       background: linear-gradient(to top, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.0) 55%);
     }
     .cat-card .content { position: relative; z-index: 2; }
-    .cat-card .emoji {
-      font-size: 2.25rem;
-      display: block;
-      margin-bottom: 6px;
-      transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    .cat-card .nut-img-wrap {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1;
     }
-    .cat-card:hover .emoji { transform: scale(1.15) rotate(-4deg); }
+    .cat-card .nut-img-wrap img {
+      width: 68%;
+      height: 68%;
+      object-fit: contain;
+      filter: drop-shadow(0 8px 18px rgba(0,0,0,0.22));
+      transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .cat-card:hover .nut-img-wrap img { transform: scale(1.15) rotate(-4deg); }
 
     /* Feature card */
     .feat-card {
@@ -460,9 +469,9 @@
 
         <!-- Almonds -->
         <a href="#" class="cat-card card-lift" style="background:#E8A020; box-shadow:0 4px 24px rgba(232,160,32,0.28), 0 1px 6px rgba(0,0,0,0.08);">
+          <div class="nut-img-wrap"><img src="brand_assets/nuts/nut-almond.png" alt="Almonds"></div>
           <div class="overlay"></div>
           <div class="content">
-            <span class="emoji">🥜</span>
             <div class="font-display" style="color:#fff; font-size:1.25rem; letter-spacing:-0.01em; line-height:1.1;">ALMONDS</div>
             <div style="color:rgba(255,255,255,0.7); font-size:0.75rem; margin-top:3px;">84 articles</div>
           </div>
@@ -470,9 +479,9 @@
 
         <!-- Cashews -->
         <a href="#" class="cat-card card-lift" style="background:#00AEEF; box-shadow:0 4px 24px rgba(0,174,239,0.28), 0 1px 6px rgba(0,0,0,0.08);">
+          <div class="nut-img-wrap"><img src="brand_assets/nuts/nut-cashew.png" alt="Cashews"></div>
           <div class="overlay"></div>
           <div class="content">
-            <span class="emoji">🌰</span>
             <div class="font-display" style="color:#fff; font-size:1.25rem; letter-spacing:-0.01em; line-height:1.1;">CASHEWS</div>
             <div style="color:rgba(255,255,255,0.7); font-size:0.75rem; margin-top:3px;">62 articles</div>
           </div>
@@ -480,9 +489,9 @@
 
         <!-- Walnuts -->
         <a href="#" class="cat-card card-lift" style="background:#CC2929; box-shadow:0 4px 24px rgba(204,41,41,0.28), 0 1px 6px rgba(0,0,0,0.08);">
+          <div class="nut-img-wrap"><img src="brand_assets/nuts/nut-walnut.png" alt="Walnuts"></div>
           <div class="overlay"></div>
           <div class="content">
-            <span class="emoji">🪨</span>
             <div class="font-display" style="color:#fff; font-size:1.25rem; letter-spacing:-0.01em; line-height:1.1;">WALNUTS</div>
             <div style="color:rgba(255,255,255,0.7); font-size:0.75rem; margin-top:3px;">57 articles</div>
           </div>
@@ -490,9 +499,9 @@
 
         <!-- Pistachios -->
         <a href="#" class="cat-card card-lift" style="background:#8CB43A; box-shadow:0 4px 24px rgba(140,180,58,0.28), 0 1px 6px rgba(0,0,0,0.08);">
+          <div class="nut-img-wrap"><img src="brand_assets/nuts/nut-pistachio.png" alt="Pistachios"></div>
           <div class="overlay"></div>
           <div class="content">
-            <span class="emoji">🌿</span>
             <div class="font-display" style="color:#fff; font-size:1.25rem; letter-spacing:-0.01em; line-height:1.1;">PISTACHIOS</div>
             <div style="color:rgba(255,255,255,0.7); font-size:0.75rem; margin-top:3px;">45 articles</div>
           </div>
@@ -500,9 +509,9 @@
 
         <!-- Peanuts -->
         <a href="#" class="cat-card card-lift" style="background:#1A1A1A; box-shadow:0 4px 24px rgba(0,0,0,0.22), 0 1px 6px rgba(0,0,0,0.1);">
+          <div class="nut-img-wrap"><img src="brand_assets/nuts/nut-peanut.png" alt="Peanuts"></div>
           <div class="overlay"></div>
           <div class="content">
-            <span class="emoji">🥜</span>
             <div class="font-display" style="color:#fff; font-size:1.25rem; letter-spacing:-0.01em; line-height:1.1;">PEANUTS</div>
             <div style="color:rgba(255,255,255,0.7); font-size:0.75rem; margin-top:3px;">71 articles</div>
           </div>
@@ -510,9 +519,9 @@
 
         <!-- Hazelnuts -->
         <a href="#" class="cat-card card-lift" style="background:#E8A020; box-shadow:0 4px 24px rgba(232,160,32,0.28), 0 1px 6px rgba(0,0,0,0.08);">
+          <div class="nut-img-wrap"><img src="brand_assets/nuts/nut-hazelnut.png" alt="Hazelnuts"></div>
           <div class="overlay"></div>
           <div class="content">
-            <span class="emoji">🌰</span>
             <div class="font-display" style="color:#fff; font-size:1.25rem; letter-spacing:-0.01em; line-height:1.1;">HAZELNUTS</div>
             <div style="color:rgba(255,255,255,0.7); font-size:0.75rem; margin-top:3px;">38 articles</div>
           </div>
@@ -520,9 +529,9 @@
 
         <!-- Pecans -->
         <a href="#" class="cat-card card-lift" style="background:#00AEEF; box-shadow:0 4px 24px rgba(0,174,239,0.28), 0 1px 6px rgba(0,0,0,0.08);">
+          <div class="nut-img-wrap"><img src="brand_assets/nuts/nut-pecan.png" alt="Pecans"></div>
           <div class="overlay"></div>
           <div class="content">
-            <span class="emoji">🌰</span>
             <div class="font-display" style="color:#fff; font-size:1.25rem; letter-spacing:-0.01em; line-height:1.1;">PECANS</div>
             <div style="color:rgba(255,255,255,0.7); font-size:0.75rem; margin-top:3px;">29 articles</div>
           </div>

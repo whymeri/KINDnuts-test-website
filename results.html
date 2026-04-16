@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KIND Nuts+ — Your Weekly Mix</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    body { margin: 0; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; }
+
+    .panel { position: relative; flex: 1; height: 685px; overflow: hidden; }
+
+    /* Nut image */
+    .panel-img {
+      position: absolute;
+      width: 240px;
+      height: 360px;
+      top: 161px;
+      object-fit: cover;
+    }
+    .panel-img.centered { left: 50%; transform: translateX(-50%); }
+    .panel-img.offset   { left: 58px; }
+
+    /* Labels */
+    .label {
+      position: absolute;
+      font-family: 'Helvetica Neue', Helvetica, sans-serif;
+      font-weight: 700;
+      font-size: 21px;
+      color: white;
+      text-align: center;
+      line-height: 1.2;
+      letter-spacing: -0.42px;
+      width: 105px;
+      transform: translateX(-50%);
+    }
+
+    /* Arrow SVGs */
+    .arrow {
+      position: absolute;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .arrow-top {
+      left: 256px; top: 155px;
+      width: 45px; height: 102px;
+    }
+    .arrow-bottom {
+      left: 44px; top: 435px;
+      width: 68px; height: 103px;
+    }
+
+    /* Fade-in animation */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .panel { animation: fadeUp 0.6s cubic-bezier(0.16,1,0.3,1) both; }
+    .panel:nth-child(1) { animation-delay: 0.0s; }
+    .panel:nth-child(2) { animation-delay: 0.08s; }
+    .panel:nth-child(3) { animation-delay: 0.16s; }
+    .panel:nth-child(4) { animation-delay: 0.24s; }
+
+    /* Panel hover lift */
+    .panel { transition: flex 0.35s cubic-bezier(0.16,1,0.3,1); cursor: default; }
+    .panel:hover { flex: 1.12; }
+
+    .panel::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0);
+      transition: background 0.3s ease;
+      pointer-events: none;
+    }
+    .panel:not(:hover)::after { background: rgba(0,0,0,0.08); }
+  </style>
+</head>
+<body class="bg-white flex flex-col min-h-screen">
+
+  <!-- Nav -->
+  <nav style="background:#211f20; height:108px;" class="w-full shrink-0 flex items-center px-[86px] justify-between">
+    <img src="https://www.figma.com/api/mcp/asset/eb91faea-a9ad-4cc1-b5bf-048d38944be6"
+         alt="KIND Nuts+" style="height:80px; aspect-ratio:1250/390; object-fit:contain;" />
+    <div class="flex items-center gap-2">
+      <img src="https://www.figma.com/api/mcp/asset/9f5ef889-9a4d-4fad-b7f5-0d9d6245df61" alt="" style="width:18px;height:18px;">
+      <span style="font-family:Montserrat,sans-serif; font-weight:500; color:#f1f1f1; font-size:16px;">John Miller</span>
+      <img src="https://www.figma.com/api/mcp/asset/d77b9ab1-4a2a-4643-a554-f9a9320ab229" alt="" style="width:18px;height:18px;">
+    </div>
+  </nav>
+
+  <!-- 4-Panel showcase -->
+  <div style="height:685px; overflow:hidden;" class="flex w-full shrink-0">
+
+    <!-- Panel 1 — Honey Roasted / Rosemary — Orange -->
+    <div class="panel" style="background:#ff9c00;">
+      <!-- Top arrow -->
+      <div class="arrow arrow-top">
+        <svg style="transform:rotate(-81.96deg);" width="98" height="32" viewBox="0 0 98 32" fill="none">
+          <path d="M4 28 C30 26 75 8 92 5" stroke="white" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+          <path d="M82 2 L92 5 L87 14" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        </svg>
+      </div>
+      <!-- Bottom arrow -->
+      <div class="arrow arrow-bottom">
+        <svg style="transform:rotate(66.76deg);" width="98" height="32" viewBox="0 0 98 32" fill="none">
+          <path d="M4 28 C30 26 75 8 92 5" stroke="white" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+          <path d="M82 2 L92 5 L87 14" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        </svg>
+      </div>
+      <!-- Labels -->
+      <p class="label" style="left:221.5px; top:126px; width:105px;">Honey Roasted</p>
+      <p class="label" style="left:173.5px; top:514px; width:105px;">Rosemary</p>
+      <!-- Nut image -->
+      <img class="panel-img offset"
+           src="https://www.figma.com/api/mcp/asset/32d7a237-ac4d-451e-ade1-bbe0cae27fdf"
+           alt="Honey Roasted Rosemary Peanuts">
+    </div>
+
+    <!-- Panel 2 — Sea Salt / Cacao — Brown -->
+    <div class="panel" style="background:#a05110;">
+      <div class="arrow arrow-top">
+        <svg style="transform:rotate(-81.96deg);" width="98" height="32" viewBox="0 0 98 32" fill="none">
+          <path d="M4 28 C30 26 75 8 92 5" stroke="white" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+          <path d="M82 2 L92 5 L87 14" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        </svg>
+      </div>
+      <div class="arrow arrow-bottom">
+        <svg style="transform:rotate(66.76deg);" width="98" height="32" viewBox="0 0 98 32" fill="none">
+          <path d="M4 28 C30 26 75 8 92 5" stroke="white" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+          <path d="M82 2 L92 5 L87 14" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        </svg>
+      </div>
+      <p class="label" style="left:221.5px; top:126px; width:105px;">Sea Salt</p>
+      <p class="label" style="left:173.5px; top:514px; width:105px;">Cacao</p>
+      <img class="panel-img centered"
+           src="https://www.figma.com/api/mcp/asset/a981b4a3-c304-4678-891f-4e6e92167168"
+           alt="Sea Salt Cacao Peanuts">
+    </div>
+
+    <!-- Panel 3 — Chilli / Lime — Green -->
+    <div class="panel" style="background:#a1d025;">
+      <div class="arrow arrow-top">
+        <svg style="transform:rotate(-81.96deg);" width="98" height="32" viewBox="0 0 98 32" fill="none">
+          <path d="M4 28 C30 26 75 8 92 5" stroke="white" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+          <path d="M82 2 L92 5 L87 14" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        </svg>
+      </div>
+      <div class="arrow arrow-bottom">
+        <svg style="transform:rotate(66.76deg);" width="98" height="32" viewBox="0 0 98 32" fill="none">
+          <path d="M4 28 C30 26 75 8 92 5" stroke="white" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+          <path d="M82 2 L92 5 L87 14" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        </svg>
+      </div>
+      <p class="label" style="left:234px; top:126px; width:80px;">Chilli</p>
+      <p class="label" style="left:165.5px; top:514px; width:89px;">Lime</p>
+      <img class="panel-img centered"
+           src="https://www.figma.com/api/mcp/asset/48095689-6408-4238-b2fa-93587a2e9833"
+           alt="Chilli Lime Peanuts">
+    </div>
+
+    <!-- Panel 4 — Sea Salt / Apple Cider Vinegar — Teal -->
+    <div class="panel" style="background:#00c7cc;">
+      <div class="arrow arrow-top">
+        <svg style="transform:rotate(-81.96deg);" width="98" height="32" viewBox="0 0 98 32" fill="none">
+          <path d="M4 28 C30 26 75 8 92 5" stroke="white" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+          <path d="M82 2 L92 5 L87 14" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        </svg>
+      </div>
+      <div class="arrow arrow-bottom">
+        <svg style="transform:rotate(66.76deg);" width="98" height="32" viewBox="0 0 98 32" fill="none">
+          <path d="M4 28 C30 26 75 8 92 5" stroke="white" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+          <path d="M82 2 L92 5 L87 14" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        </svg>
+      </div>
+      <p class="label" style="left:239px; top:126px; width:70px;">Sea Salt</p>
+      <p class="label" style="left:184px; top:514px; width:126px;">Apple Cider Vinegar</p>
+      <img class="panel-img centered"
+           src="https://www.figma.com/api/mcp/asset/c3311818-020f-4fb1-a4d0-d253d34c33d8"
+           alt="Sea Salt Apple Cider Vinegar Peanuts">
+    </div>
+
+  </div>
+
+  <!-- Step CTA -->
+  <div style="background:white; border-top:1px solid #e5e5e5; padding:20px 94px; display:flex; align-items:center; justify-content:space-between;">
+    <div>
+      <p style="font-size:14px; color:#888; margin:0; text-transform:uppercase; letter-spacing:0.08em; font-weight:500;">Step 2 of 4</p>
+      <p style="font-size:18px; font-weight:700; color:#1a1a19; margin:4px 0 0; letter-spacing:-0.36px;">Here are your peanut flavors</p>
+    </div>
+    <a href="flavors.html"
+       style="background:#1a1a19; color:white; font-size:16px; font-weight:700; padding:14px 40px; border-radius:999px; text-decoration:none; letter-spacing:-0.32px; transition:opacity 0.15s ease;"
+       onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
+      Pick your flavors →
+    </a>
+  </div>
+
+  <!-- Footer -->
+  <footer style="background:#1a1a19;" class="w-full shrink-0">
+    <div class="px-[83px] pt-[64px] pb-[40px] flex flex-col">
+      <h2 style="font-family:'Helvetica Neue',Helvetica,sans-serif; font-weight:700; font-size:32px; color:white; letter-spacing:-0.64px;" class="mb-[62px]">
+        Happier happens together
+      </h2>
+      <div class="flex gap-8 flex-wrap mb-10">
+        <a href="#" style="font-family:'Helvetica Neue',Helvetica,sans-serif; font-size:14px; line-height:1.5;" class="text-white underline">Accessibility</a>
+        <a href="#" style="font-family:'Helvetica Neue',Helvetica,sans-serif; font-size:14px; line-height:1.5;" class="text-white underline">Privacy Policy</a>
+        <a href="#" style="font-family:'Helvetica Neue',Helvetica,sans-serif; font-size:14px; line-height:1.5;" class="text-white underline">Site Map</a>
+        <a href="#" style="font-family:'Helvetica Neue',Helvetica,sans-serif; font-size:14px; line-height:1.5;" class="text-white underline">Terms of Use</a>
+      </div>
+      <hr style="border-color:rgba(255,255,255,0.2);" class="mb-6">
+      <p style="font-family:'Helvetica Neue',Helvetica,sans-serif; font-size:12px; color:white; line-height:1.5;">© Copyright 2026 Mars</p>
+    </div>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KIND Nuts+ — Pick Your Flavors</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    body { margin: 0; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .spice-card {
+      animation: fadeUp 0.5s cubic-bezier(0.16,1,0.3,1) both;
+      cursor: pointer;
+      background: white;
+      border: 1px solid #dbd8d5;
+      border-radius: 16px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      position: relative;
+      transition: box-shadow 0.2s ease, transform 0.2s ease, border-color 0.15s ease;
+      overflow: hidden;
+    }
+    .spice-card:nth-child(1)  { animation-delay: 0.04s; }
+    .spice-card:nth-child(2)  { animation-delay: 0.08s; }
+    .spice-card:nth-child(3)  { animation-delay: 0.12s; }
+    .spice-card:nth-child(4)  { animation-delay: 0.16s; }
+    .spice-card:nth-child(5)  { animation-delay: 0.20s; }
+    .spice-card:nth-child(6)  { animation-delay: 0.24s; }
+    .spice-card:nth-child(7)  { animation-delay: 0.28s; }
+    .spice-card:nth-child(8)  { animation-delay: 0.32s; }
+    .spice-card:nth-child(9)  { animation-delay: 0.36s; }
+    .spice-card:nth-child(10) { animation-delay: 0.40s; }
+    .spice-card:nth-child(11) { animation-delay: 0.44s; }
+    .spice-card:nth-child(12) { animation-delay: 0.48s; }
+    .spice-card:nth-child(13) { animation-delay: 0.52s; }
+
+    .spice-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 36px rgba(0,0,0,0.12);
+    }
+    .spice-card.selected {
+      border-color: #1a1a19 !important;
+      box-shadow: 0 0 0 2px #1a1a19, 0 8px 28px rgba(0,0,0,0.1);
+    }
+    .spice-card.selected .check {
+      opacity: 1;
+      transform: scale(1);
+    }
+    /* Tint the card bg lightly when selected */
+    .spice-card.selected .spice-visual {
+      filter: brightness(1.05);
+    }
+
+    .check {
+      position: absolute;
+      top: 14px; right: 14px;
+      width: 28px; height: 28px;
+      background: #1a1a19;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0;
+      transform: scale(0.6);
+      transition: opacity 0.15s ease, transform 0.2s cubic-bezier(0.16,1,0.3,1);
+      z-index: 2;
+    }
+
+    /* Spice photo visual */
+    .spice-visual {
+      flex: 1;
+      overflow: hidden;
+      border-radius: 10px;
+      min-height: 160px;
+      transition: filter 0.2s ease;
+    }
+    .spice-visual img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      display: block;
+      border-radius: 10px;
+      transition: transform 0.35s cubic-bezier(0.16,1,0.3,1);
+    }
+    .spice-card:hover .spice-visual img {
+      transform: scale(1.04);
+    }
+
+    /* Card color accent strip at top */
+    .card-accent {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+      border-radius: 16px 16px 0 0;
+    }
+
+    /* CTA bar */
+    .cta-bar {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      background: white;
+      border-top: 1px solid #e5e5e5;
+      padding: 16px 94px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 100;
+      transform: translateY(100%);
+      transition: transform 0.35s cubic-bezier(0.16,1,0.3,1);
+      box-shadow: 0 -4px 24px rgba(0,0,0,0.08);
+    }
+    .cta-bar.visible { transform: translateY(0); }
+
+    .bg-texture {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      pointer-events: none;
+      opacity: 0.35;
+    }
+
+    .heat-dot {
+      display: inline-block;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      margin-right: 2px;
+      vertical-align: middle;
+    }
+  </style>
+</head>
+<body class="bg-white flex flex-col min-h-screen">
+
+  <!-- Nav -->
+  <nav style="background:#211f20; height:108px;" class="w-full shrink-0 flex items-center px-[86px] justify-between z-10 relative">
+    <a href="results.html">
+      <img src="https://www.figma.com/api/mcp/asset/eb91faea-a9ad-4cc1-b5bf-048d38944be6"
+           alt="KIND Nuts+" style="height:80px; aspect-ratio:1250/390; object-fit:contain;">
+    </a>
+    <div class="flex items-center gap-2">
+      <img src="https://www.figma.com/api/mcp/asset/9f5ef889-9a4d-4fad-b7f5-0d9d6245df61" alt="" style="width:18px;height:18px;">
+      <span style="font-family:Montserrat,sans-serif;font-weight:500;color:#f1f1f1;font-size:16px;">John Miller</span>
+      <img src="https://www.figma.com/api/mcp/asset/d77b9ab1-4a2a-4643-a554-f9a9320ab229" alt="" style="width:18px;height:18px;">
+    </div>
+  </nav>
+
+  <!-- Main -->
+  <main class="flex-1 relative overflow-hidden pb-[100px]">
+    <img src="https://www.figma.com/api/mcp/asset/6c14d4e8-b2a8-4d22-ba43-456e7257a102" alt="" class="bg-texture">
+
+    <div class="relative z-10 px-[94px] py-[80px] flex flex-col gap-[40px]">
+
+      <!-- Header -->
+      <div class="flex flex-col gap-[10px]">
+        <p style="font-size:14px; color:#888; letter-spacing:0.08em; text-transform:uppercase; font-weight:500; margin:0;">Step 3 of 4</p>
+        <h1 style="font-weight:700; font-size:32px; color:#1a1a19; letter-spacing:-0.64px; margin:0;">
+          Let's pick your flavors
+        </h1>
+        <p style="font-size:18px; color:#555; margin:0; line-height:1.5; max-width:580px;">
+          Choose up to 4 spice profiles for your peanut mix. We'll coat each batch to order.
+        </p>
+      </div>
+
+      <!-- Grid — 5 columns -->
+      <div id="spice-grid" style="display:grid; grid-template-columns:repeat(5,1fr); gap:18px; max-width:1252px;">
+
+        <!-- Honey -->
+        <div class="spice-card" onclick="toggleCard(this)" data-name="Honey">
+          <div class="card-accent" style="background:linear-gradient(90deg,#f9c846,#d4860a);"></div>
+          <div class="check"><svg width="14" height="10" viewBox="0 0 14 10" fill="none"><path d="M1 5L5 9L13 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div>
+            <p style="font-weight:700; font-size:18px; color:#1a1a19; margin:0; letter-spacing:-0.36px;">Honey</p>
+            <p style="font-size:13px; color:#888; margin:4px 0 0;">Sweet &amp; golden</p>
+          </div>
+          <div class="spice-visual">
+            <img src="https://images.unsplash.com/photo-1644221362202-2e3e6b01d717?w=400&h=240&fit=crop&auto=format" alt="Honey">
+          </div>
+          <div style="display:flex; align-items:center; gap:4px; font-size:12px; color:#888;">
+            <span class="heat-dot" style="background:#f9c846;"></span>
+            <span class="heat-dot" style="background:#e5e5e5;"></span>
+            <span class="heat-dot" style="background:#e5e5e5;"></span>
+            <span style="margin-left:4px;">Mild</span>
+          </div>
+        </div>
+
+        <!-- Sea Salt -->
+        <div class="spice-card" onclick="toggleCard(this)" data-name="Sea Salt">
+          <div class="card-accent" style="background:linear-gradient(90deg,#c8dde8,#7a9fb0);"></div>
+          <div class="check"><svg width="14" height="10" viewBox="0 0 14 10" fill="none"><path d="M1 5L5 9L13 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div>
+            <p style="font-weight:700; font-size:18px; color:#1a1a19; margin:0; letter-spacing:-0.36px;">Sea Salt</p>
+            <p style="font-size:13px; color:#888; margin:4px 0 0;">Clean &amp; classic</p>
+          </div>
+          <div class="spice-visual">
+            <img src="https://images.unsplash.com/photo-1706127290704-0b279c8b1442?w=400&h=240&fit=crop&auto=format" alt="Sea Salt">
+          </div>
+          <div style="display:flex; align-items:center; gap:4px; font-size:12px; color:#888;">
+            <span class="heat-dot" style="background:#9ab8c8;"></span>
+            <span class="heat-dot" style="background:#e5e5e5;"></span>
+            <span class="heat-dot" style="background:#e5e5e5;"></span>
+            <span style="margin-left:4px;">Mild</span>
+          </div>
+        </div>
+
+        <!-- Cinnamon -->
+        <div class="spice-card" onclick="toggleCard(this)" data-name="Cinnamon">
+          <div class="card-accent" style="background:linear-gradient(90deg,#c07830,#7a3800);"></div>
+          <div class="check"><svg width="14" height="10" viewBox="0 0 14 10" fill="none"><path d="M1 5L5 9L13 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div>
+            <p style="font-weight:700; font-size:18px; color:#1a1a19; margin:0; letter-spacing:-0.36px;">Cinnamon</p>
+            <p style="font-size:13px; color:#888; margin:4px 0 0;">Warm &amp; sweet</p>
+          </div>
+          <div class="spice-visual">
+            <img src="https://images.unsplash.com/photo-1528815505751-35fd86b958c6?w=400&h=240&fit=crop&auto=format" alt="Cinnamon">
+          </div>
+          <div style="display:flex; align-items:center; gap:4px; font-size:12px; color:#888;">
+            <span class="heat-dot" style="background:#c07830;"></span>
+            <span class="heat-dot" style="background:#e5e5e5;"></span>
+            <span class="heat-dot" style="background:#e5e5e5;"></span>
+            <span style="margin-left:4px;">Mild</span>
+          </div>
+        </div>
+
+        <!-- Cocoa -->
+        <div class="spice-card" onclick="toggleCard(this)" data-name="Cocoa">
+          <div class="card-accent" style="background:linear-gradient(90deg,#6b3010,#2a1008);"></div>
+          <div class="check"><svg width="14" height="10" viewBox="0 0 14 10" fill="none"><path d="M1 5L5 9L13 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div>
+            <p style="font-weight:700; font-size:18px; color:#1a1a19; margin:0; letter-spacing:-0.36px;">Cocoa</p>
+            <p style="font-size:13px; color:#888; margin:4px 0 0;">Rich &amp; dark</p>
+          </div>
+          <div class="spice-visual">
+            <img src="https://images.unsplash.com/photo-1756460134962-a2890033b968?w=400&h=240&fit=crop&auto=format" alt="Cocoa">
+          </div>
+          <div style="display:flex; align-items:center; gap:4px; font-size:12px; color:#888;">
+            <span class="heat-dot" style="background:#6b3010;"></span>
+            <span class="heat-dot" style="background:#e5e5e5;"></span>
+            <span class="heat-dot" style="background:#e5e5e5;"></span>
+            <span style="margin-left:4px;">Mild</span>
+          </div>
+        </div>
+
+        <!-- BBQ -->
+        <div class="spice-card" onclick="toggleCard(this)" data-name="BBQ">
+          <div class="card-accent" style="background:linear-gradient(90deg,#c44000,#6b1a00);"></div>
+          <div class="check"><svg width="14" height="10" viewBox="0 0 14 10" fill="none"><path d="M1 5L5 9L13 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div>
+            <p style="font-weight:700; font-size:18px; color:#1a1a19; margin:0; letter-spacing:-0.36px;">BBQ</p>
+            <p style="font-size:13px; color:#888; margin:4px 0 0;">Smoky &amp; sweet</p>
+          </div>
+          <div class="spice-visual">
+            <img src="https://images.unsplash.com/photo-1720569594980-0b7a5450d989?w=400&h=240&fit=crop&auto=format" alt="BBQ">
+          </div>
+          <div style="display:flex; align-items:center; gap:4px; font-size:12px; color:#888;">
+            <span class="heat-dot" style="background:#c44000;"></span>
+            <span class="heat-dot" style="background:#c44000;"></span>
+            <span class="heat-dot" style="background:#e5e5e5;"></span>
+            <span style="margin-left:4px;">Medium</span>
+          </div>
+        </div>
+
+        <!-- Salt & Vinegar -->
+        <div class="spice-card" onclick="toggleCard(this)" data-name="Salt & Vinegar">
+          <div class="card-accent" style="background:linear-gradient(90deg,#f0e94a,#b8a918);"></div>
+          <div class="check"><svg width="14" height="10" viewBox="0 0 14 10" fill="none"><path d="M1 5L5 9L13 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div>
+            <p style="font-weight:700; font-size:18px; color:#1a1a19; margin:0; letter-spacing:-0.36px;">Salt &amp; Vinegar</p>
+            <p style="font-size:13px; color:#888; margin:4px 0 0;">Tangy &amp; sharp</p>
+          </div>
+          <div class="spice-visual">
+            <img src="https://images.unsplash.com/photo-1534336810865-0beae4c81278?w=400&h=240&fit=crop&auto=format" alt="Salt & Vinegar">
+          </div>
+          <div style="display:flex; align-items:center; gap:4px; font-size:12px; color:#888;">
+            <span class="heat-dot" style="background:#d4c84a;"></span>
+            <span class="heat-dot" style="background:#d4c84a;"></span>
+            <span class="heat-dot" style="background:#e5e5e5;"></span>
+            <span style="margin-left:4px;">Medium</span>
+          </div>
+        </div>
+
+        <!-- Smoked Paprika -->
+        <div class="spice-card" onclick="toggleCard(this)" data-name="Smoked Paprika">
+          <div class="card-accent" style="background:linear-gradient(90deg,#e84040,#8b1a1a);"></div>
+          <div class="check"><svg width="14" height="10" viewBox="0 0 14 10" fill="none"><path d="M1 5L5 9L13 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div>
+            <p style="font-weight:700; font-size:18px; color:#1a1a19; margin:0; letter-spacing:-0.36px;">Smoked Paprika</p>
+            <p style="font-size:13px; color:#888; margin:4px 0 0;">Smoky &amp; earthy</p>
+          </div>
+          <div class="spice-visual">
+            <img src="brand_assets/spices/SmokedPaprika3.webp" alt="Smoked Paprika">
+          </div>
+          <div style="display:flex; align-items:center; gap:4px; font-size:12px; color:#888;">
+            <span class="heat-dot" style="background:#e84040;"></span>
+            <span class="heat-dot" style="background:#e84040;"></span>
+            <span class="heat-dot" style="background:#e5e5e5;"></span>
+            <span style="margin-left:4px;">Medium</span>
+          </div>
+        </div>
+
+        <!-- Garlic Herb -->
+        <div class="spice-card" onclick="toggleCard(this)" data-name="Garlic Herb">
+          <div class="card-accent" style="background:linear-gradient(90deg,#d4e8a0,#7a9830);"></div>
+          <div class="check"><svg width="14" height="10" viewBox="0 0 14 10" fill="none"><path d="M1 5L5 9L13 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div>
+            <p style="font-weight:700; font-size:18px; color:#1a1a19; margin:0; letter-spacing:-0.36px;">Garlic Herb</p>
+            <p style="font-size:13px; color:#888; margin:4px 0 0;">Savory &amp; aromatic</p>
+          </div>
+          <div class="spice-visual">
+            <img src="https://images.unsplash.com/photo-1710857389305-5cba9211033f?w=400&h=240&fit=crop&auto=format" alt="Garlic Herb">
+          </div>
+          <div style="display:flex; align-items:center; gap:4px; font-size:12px; color:#888;">
+            <span class="heat-dot" style="background:#7a9830;"></span>
+            <span class="heat-dot" style="background:#e5e5e5;"></span>
+            <span class="heat-dot" style="background:#e5e5e5;"></span>
+            <span style="margin-left:4px;">Mild</span>
+          </div>
+        </div>
+
+        <!-- Chili Powder -->
+        <div class="spice-card" onclick="toggleCard(this)" data-name="Chili Powder">
+          <div class="card-accent" style="background:linear-gradient(90deg,#d43820,#7a1408);"></div>
+          <div class="check"><svg width="14" height="10" viewBox="0 0 14 10" fill="none"><path d="M1 5L5 9L13 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div>
+            <p style="font-weight:700; font-size:18px; color:#1a1a19; margin:0; letter-spacing:-0.36px;">Chili Powder</p>
+            <p style="font-size:13px; color:#888; margin:4px 0 0;">Bold &amp; spiced</p>
+          </div>
+          <div class="spice-visual">
+            <img src="brand_assets/spices/SmokedPaprika2.webp" alt="Chili Powder">
+          </div>
+          <div style="display:flex; align-items:center; gap:4px; font-size:12px; color:#888;">
+            <span class="heat-dot" style="background:#d43820;"></span>
+            <span class="heat-dot" style="background:#d43820;"></span>
+            <span class="heat-dot" style="background:#d43820;"></span>
+            <span style="margin-left:4px;">Hot</span>
+          </div>
+        </div>
+
+        <!-- Cayenne -->
+        <div class="spice-card" onclick="toggleCard(this)" data-name="Cayenne">
+          <div class="card-accent" style="background:linear-gradient(90deg,#f05020,#a01808);"></div>
+          <div class="check"><svg width="14" height="10" viewBox="0 0 14 10" fill="none"><path d="M1 5L5 9L13 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div>
+            <p style="font-weight:700; font-size:18px; color:#1a1a19; margin:0; letter-spacing:-0.36px;">Cayenne</p>
+            <p style="font-size:13px; color:#888; margin:4px 0 0;">Fiery &amp; intense</p>
+          </div>
+          <div class="spice-visual">
+            <img src="brand_assets/spices/SmokedPaprika4.jpg" alt="Cayenne">
+          </div>
+          <div style="display:flex; align-items:center; gap:4px; font-size:12px; color:#888;">
+            <span class="heat-dot" style="background:#f05020;"></span>
+            <span class="heat-dot" style="background:#f05020;"></span>
+            <span class="heat-dot" style="background:#f05020;"></span>
+            <span style="margin-left:4px;">Very hot</span>
+          </div>
+        </div>
+
+        <!-- Cumin -->
+        <div class="spice-card" onclick="toggleCard(this)" data-name="Cumin">
+          <div class="card-accent" style="background:linear-gradient(90deg,#c8901a,#7a4800);"></div>
+          <div class="check"><svg width="14" height="10" viewBox="0 0 14 10" fill="none"><path d="M1 5L5 9L13 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div>
+            <p style="font-weight:700; font-size:18px; color:#1a1a19; margin:0; letter-spacing:-0.36px;">Cumin</p>
+            <p style="font-size:13px; color:#888; margin:4px 0 0;">Earthy &amp; warm</p>
+          </div>
+          <div class="spice-visual">
+            <img src="https://images.unsplash.com/photo-1674544037006-079e4c8ae387?w=400&h=240&fit=crop&auto=format" alt="Cumin">
+          </div>
+          <div style="display:flex; align-items:center; gap:4px; font-size:12px; color:#888;">
+            <span class="heat-dot" style="background:#c8901a;"></span>
+            <span class="heat-dot" style="background:#e5e5e5;"></span>
+            <span class="heat-dot" style="background:#e5e5e5;"></span>
+            <span style="margin-left:4px;">Mild</span>
+          </div>
+        </div>
+
+        <!-- Turmeric -->
+        <div class="spice-card" onclick="toggleCard(this)" data-name="Turmeric">
+          <div class="card-accent" style="background:linear-gradient(90deg,#e8b800,#a07800);"></div>
+          <div class="check"><svg width="14" height="10" viewBox="0 0 14 10" fill="none"><path d="M1 5L5 9L13 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div>
+            <p style="font-weight:700; font-size:18px; color:#1a1a19; margin:0; letter-spacing:-0.36px;">Turmeric</p>
+            <p style="font-size:13px; color:#888; margin:4px 0 0;">Golden &amp; bright</p>
+          </div>
+          <div class="spice-visual">
+            <img src="https://images.unsplash.com/photo-1626025599030-9af1661695f4?w=400&h=240&fit=crop&auto=format" alt="Turmeric">
+          </div>
+          <div style="display:flex; align-items:center; gap:4px; font-size:12px; color:#888;">
+            <span class="heat-dot" style="background:#e8b800;"></span>
+            <span class="heat-dot" style="background:#e5e5e5;"></span>
+            <span class="heat-dot" style="background:#e5e5e5;"></span>
+            <span style="margin-left:4px;">Mild</span>
+          </div>
+        </div>
+
+        <!-- Curry Powder -->
+        <div class="spice-card" onclick="toggleCard(this)" data-name="Curry Powder">
+          <div class="card-accent" style="background:linear-gradient(90deg,#d4780a,#8a4000);"></div>
+          <div class="check"><svg width="14" height="10" viewBox="0 0 14 10" fill="none"><path d="M1 5L5 9L13 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div>
+            <p style="font-weight:700; font-size:18px; color:#1a1a19; margin:0; letter-spacing:-0.36px;">Curry Powder</p>
+            <p style="font-size:13px; color:#888; margin:4px 0 0;">Complex &amp; spiced</p>
+          </div>
+          <div class="spice-visual">
+            <img src="https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=400&h=240&fit=crop&auto=format" alt="Curry Powder">
+          </div>
+          <div style="display:flex; align-items:center; gap:4px; font-size:12px; color:#888;">
+            <span class="heat-dot" style="background:#d4780a;"></span>
+            <span class="heat-dot" style="background:#d4780a;"></span>
+            <span class="heat-dot" style="background:#e5e5e5;"></span>
+            <span style="margin-left:4px;">Medium</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer style="background:#1a1a19;" class="w-full shrink-0">
+    <div class="px-[83px] pt-[64px] pb-[40px] flex flex-col">
+      <h2 style="font-weight:700; font-size:32px; color:white; letter-spacing:-0.64px; margin-bottom:62px;">Happier happens together</h2>
+      <div style="display:flex; gap:32px; flex-wrap:wrap; margin-bottom:40px;">
+        <a href="#" style="font-size:14px; line-height:1.5; color:white; text-decoration:underline;">Accessibility</a>
+        <a href="#" style="font-size:14px; line-height:1.5; color:white; text-decoration:underline;">Privacy Policy</a>
+        <a href="#" style="font-size:14px; line-height:1.5; color:white; text-decoration:underline;">Site Map</a>
+        <a href="#" style="font-size:14px; line-height:1.5; color:white; text-decoration:underline;">Terms of Use</a>
+      </div>
+      <hr style="border-color:rgba(255,255,255,0.2); margin-bottom:24px;">
+      <p style="font-size:12px; color:white; line-height:1.5; margin:0;">© Copyright 2026 Mars</p>
+    </div>
+  </footer>
+
+  <!-- Fixed CTA bar -->
+  <div class="cta-bar" id="cta-bar">
+    <div style="display:flex; align-items:center; gap:20px;">
+      <p id="selection-label" style="font-size:16px; color:#1a1a19; margin:0; font-weight:700;"></p>
+      <div id="selected-pills" style="display:flex; gap:8px; flex-wrap:wrap;"></div>
+    </div>
+    <a href="order.html"
+       style="background:#1a1a19; color:white; font-size:16px; font-weight:700; padding:14px 40px; border-radius:999px; text-decoration:none; letter-spacing:-0.32px; white-space:nowrap;"
+       onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">
+      Build my mix →
+    </a>
+  </div>
+
+  <script>
+    const MAX = 4;
+    const selected = new Set();
+
+    const COLORS = {
+      'Honey':          '#d4860a',
+      'Sea Salt':       '#7a9fb0',
+      'Cinnamon':       '#c07830',
+      'Cocoa':          '#6b3010',
+      'BBQ':            '#c44000',
+      'Salt & Vinegar': '#b8a918',
+      'Smoked Paprika': '#c0392b',
+      'Garlic Herb':    '#7a9830',
+      'Chili Powder':   '#a01808',
+      'Cayenne':        '#d03010',
+      'Cumin':          '#c8901a',
+      'Turmeric':       '#a07800',
+      'Curry Powder':   '#d4780a',
+    };
+
+    function updateCTA() {
+      const bar   = document.getElementById('cta-bar');
+      const label = document.getElementById('selection-label');
+      const pills = document.getElementById('selected-pills');
+      const n = selected.size;
+
+      bar.classList.toggle('visible', n > 0);
+      label.textContent = n === 1 ? '1 flavor selected' : `${n} flavors selected`;
+
+      pills.innerHTML = '';
+      selected.forEach(name => {
+        const pill = document.createElement('span');
+        pill.style.cssText = `background:${COLORS[name]}22; color:${COLORS[name]}; border:1px solid ${COLORS[name]}66; font-size:13px; font-weight:600; padding:4px 12px; border-radius:999px;`;
+        pill.textContent = name;
+        pills.appendChild(pill);
+      });
+    }
+
+    function toggleCard(card) {
+      const name = card.dataset.name;
+      if (selected.has(name)) {
+        selected.delete(name);
+        card.classList.remove('selected');
+      } else {
+        if (selected.size >= MAX) {
+          card.animate([
+            { transform: 'translateX(-5px)' },
+            { transform: 'translateX(5px)' },
+            { transform: 'translateX(-4px)' },
+            { transform: 'translateX(0)' },
+          ], { duration: 280, easing: 'ease-out' });
+          return;
+        }
+        selected.add(name);
+        card.classList.add('selected');
+      }
+      updateCTA();
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KIND Nuts+ — How Would You Like Your Mix?</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    body { margin: 0; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .order-card {
+      animation: fadeUp 0.6s cubic-bezier(0.16,1,0.3,1) both;
+      cursor: pointer;
+      transition: box-shadow 0.2s ease, transform 0.2s ease, border-color 0.15s ease;
+      position: relative;
+    }
+    .order-card:nth-child(1) { animation-delay: 0.05s; }
+    .order-card:nth-child(2) { animation-delay: 0.15s; }
+    .order-card:nth-child(3) { animation-delay: 0.25s; }
+
+    .order-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.13);
+    }
+    .order-card.selected {
+      border-color: #1a1a19 !important;
+      box-shadow: 0 0 0 2px #1a1a19, 0 12px 36px rgba(0,0,0,0.1);
+    }
+    .order-card.selected .card-cta {
+      background: #1a1a19;
+      color: white;
+    }
+
+    .badge {
+      position: absolute;
+      top: -14px; left: 50%; transform: translateX(-50%);
+      background: #ff9c00;
+      color: white;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 4px 14px;
+      border-radius: 999px;
+      white-space: nowrap;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .card-cta {
+      display: block;
+      width: 100%;
+      text-align: center;
+      padding: 14px 0;
+      border-radius: 999px;
+      border: 2px solid #1a1a19;
+      font-size: 16px;
+      font-weight: 700;
+      color: #1a1a19;
+      text-decoration: none;
+      transition: background 0.15s ease, color 0.15s ease;
+      letter-spacing: -0.32px;
+    }
+    .card-cta:hover {
+      background: #1a1a19;
+      color: white;
+    }
+
+    .divider { width: 100%; height: 1px; background: #e5e5e5; margin: 0; }
+
+    .bg-texture {
+      position: absolute;
+      inset: 0; width: 100%; height: 100%;
+      object-fit: cover; pointer-events: none; opacity: 0.4;
+    }
+
+    .perk { display: flex; align-items: flex-start; gap: 10px; }
+    .perk-dot { width: 6px; height: 6px; border-radius: 50%; background: #1a1a19; margin-top: 9px; flex-shrink: 0; }
+  </style>
+</head>
+<body class="bg-white flex flex-col min-h-screen">
+
+  <!-- Nav -->
+  <nav style="background:#211f20; height:108px;" class="w-full shrink-0 flex items-center px-[86px] justify-between z-10 relative">
+    <a href="flavors.html">
+      <img src="https://www.figma.com/api/mcp/asset/eb91faea-a9ad-4cc1-b5bf-048d38944be6"
+           alt="KIND Nuts+" style="height:80px; aspect-ratio:1250/390; object-fit:contain;">
+    </a>
+    <div class="flex items-center gap-2">
+      <img src="https://www.figma.com/api/mcp/asset/9f5ef889-9a4d-4fad-b7f5-0d9d6245df61" alt="" style="width:18px;height:18px;">
+      <span style="font-family:Montserrat,sans-serif;font-weight:500;color:#f1f1f1;font-size:16px;">John Miller</span>
+      <img src="https://www.figma.com/api/mcp/asset/d77b9ab1-4a2a-4643-a554-f9a9320ab229" alt="" style="width:18px;height:18px;">
+    </div>
+  </nav>
+
+  <!-- Main -->
+  <main class="flex-1 relative overflow-hidden">
+    <img src="https://www.figma.com/api/mcp/asset/6c14d4e8-b2a8-4d22-ba43-456e7257a102"
+         alt="" class="bg-texture">
+
+    <div class="relative z-10 px-[94px] py-[80px] flex flex-col gap-[56px]">
+
+      <!-- Header -->
+      <div class="flex flex-col gap-[12px]">
+        <p style="font-size:14px; color:#888; letter-spacing:0.08em; text-transform:uppercase; font-weight:500; margin:0;">Step 4 of 4</p>
+        <h1 style="font-weight:700; font-size:40px; color:#1a1a19; letter-spacing:-0.8px; margin:0; line-height:1.1;">
+          How would you like<br>your mix?
+        </h1>
+        <p style="font-size:18px; color:#555; margin:0; line-height:1.6; max-width:560px;">
+          Your personalized peanut blend is ready. Choose how you'd like to receive it.
+        </p>
+      </div>
+
+      <!-- Cards -->
+      <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:24px; max-width:1252px;">
+
+        <!-- Weekly Test Pack -->
+        <div class="order-card" onclick="selectCard(this)"
+             style="background:white; border:1px solid #dbd8d5; border-radius:20px; padding:32px; display:flex; flex-direction:column; gap:28px;">
+          <div style="display:flex; flex-direction:column; gap:8px;">
+            <div style="font-size:32px; margin-bottom:4px;">🎁</div>
+            <h2 style="font-weight:700; font-size:26px; color:#1a1a19; letter-spacing:-0.52px; margin:0;">Weekly Test Pack</h2>
+            <p style="font-size:15px; color:#666; margin:0; line-height:1.6;">Try your custom mix before committing. One bag, delivered once.</p>
+          </div>
+          <div class="divider"></div>
+          <div style="display:flex; align-items:baseline; gap:6px;">
+            <span style="font-size:40px; font-weight:700; color:#1a1a19; letter-spacing:-0.8px;">£4.99</span>
+            <span style="font-size:16px; color:#888;">one-time</span>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:12px; flex:1;">
+            <div class="perk"><div class="perk-dot"></div><p style="font-size:15px; color:#444; margin:0; line-height:1.5;">1 × 100g bag of your mix</p></div>
+            <div class="perk"><div class="perk-dot"></div><p style="font-size:15px; color:#444; margin:0; line-height:1.5;">Free delivery</p></div>
+            <div class="perk"><div class="perk-dot"></div><p style="font-size:15px; color:#444; margin:0; line-height:1.5;">No commitment required</p></div>
+            <div class="perk"><div class="perk-dot"></div><p style="font-size:15px; color:#444; margin:0; line-height:1.5;">Tasting notes included</p></div>
+          </div>
+          <a href="#" class="card-cta">Start with a sample</a>
+        </div>
+
+        <!-- Subscription — featured -->
+        <div class="order-card selected" onclick="selectCard(this)"
+             style="background:white; border:2px solid #1a1a19; border-radius:20px; padding:32px; display:flex; flex-direction:column; gap:28px; margin-top:-14px; padding-top:46px;">
+          <div class="badge">Most popular</div>
+          <div style="display:flex; flex-direction:column; gap:8px;">
+            <div style="font-size:32px; margin-bottom:4px;">📦</div>
+            <h2 style="font-weight:700; font-size:26px; color:#1a1a19; letter-spacing:-0.52px; margin:0;">Weekly Subscription</h2>
+            <p style="font-size:15px; color:#666; margin:0; line-height:1.6;">Your custom mix, automatically delivered every week. Cancel anytime.</p>
+          </div>
+          <div class="divider"></div>
+          <div style="display:flex; align-items:baseline; gap:6px;">
+            <span style="font-size:40px; font-weight:700; color:#1a1a19; letter-spacing:-0.8px;">£3.49</span>
+            <span style="font-size:16px; color:#888;">/ week</span>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:12px; flex:1;">
+            <div class="perk"><div class="perk-dot"></div><p style="font-size:15px; color:#444; margin:0; line-height:1.5;">1 × 100g bag each week</p></div>
+            <div class="perk"><div class="perk-dot"></div><p style="font-size:15px; color:#444; margin:0; line-height:1.5;">Free delivery, always</p></div>
+            <div class="perk"><div class="perk-dot"></div><p style="font-size:15px; color:#444; margin:0; line-height:1.5;">Update or pause anytime</p></div>
+            <div class="perk"><div class="perk-dot"></div><p style="font-size:15px; color:#444; margin:0; line-height:1.5;">Save 30% vs. bulk</p></div>
+            <div class="perk"><div class="perk-dot"></div><p style="font-size:15px; color:#444; margin:0; line-height:1.5;">Adjust your mix monthly</p></div>
+          </div>
+          <a href="#" class="card-cta" style="background:#1a1a19; color:white;">Subscribe — save 30%</a>
+        </div>
+
+        <!-- Bulk Order -->
+        <div class="order-card" onclick="selectCard(this)"
+             style="background:white; border:1px solid #dbd8d5; border-radius:20px; padding:32px; display:flex; flex-direction:column; gap:28px;">
+          <div style="display:flex; flex-direction:column; gap:8px;">
+            <div style="font-size:32px; margin-bottom:4px;">🏷️</div>
+            <h2 style="font-weight:700; font-size:26px; color:#1a1a19; letter-spacing:-0.52px; margin:0;">Bulk Order</h2>
+            <p style="font-size:15px; color:#666; margin:0; line-height:1.6;">Stock up for the month. One large bag, shipped when you want it.</p>
+          </div>
+          <div class="divider"></div>
+          <div style="display:flex; align-items:baseline; gap:6px;">
+            <span style="font-size:40px; font-weight:700; color:#1a1a19; letter-spacing:-0.8px;">£14.99</span>
+            <span style="font-size:16px; color:#888;">one-time</span>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:12px; flex:1;">
+            <div class="perk"><div class="perk-dot"></div><p style="font-size:15px; color:#444; margin:0; line-height:1.5;">1 × 400g bag of your mix</p></div>
+            <div class="perk"><div class="perk-dot"></div><p style="font-size:15px; color:#444; margin:0; line-height:1.5;">Free delivery</p></div>
+            <div class="perk"><div class="perk-dot"></div><p style="font-size:15px; color:#444; margin:0; line-height:1.5;">Best value per gram</p></div>
+            <div class="perk"><div class="perk-dot"></div><p style="font-size:15px; color:#444; margin:0; line-height:1.5;">Resealable bag</p></div>
+          </div>
+          <a href="#" class="card-cta">Order in bulk</a>
+        </div>
+
+      </div>
+
+      <!-- Reassurance strip -->
+      <div style="max-width:1252px; display:flex; gap:48px; flex-wrap:wrap; padding-top:8px;">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2L12.09 7.26L18 8.27L14 12.14L14.91 18L10 15.27L5.09 18L6 12.14L2 8.27L7.91 7.26L10 2Z" stroke="#1a1a19" stroke-width="1.5" stroke-linejoin="round"/></svg>
+          <span style="font-size:14px; color:#555; font-weight:500;">Free delivery on all orders</span>
+        </div>
+        <div style="display:flex; align-items:center; gap:10px;">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 10L8 14L16 6" stroke="#1a1a19" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span style="font-size:14px; color:#555; font-weight:500;">Cancel or change anytime</span>
+        </div>
+        <div style="display:flex; align-items:center; gap:10px;">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="6" width="14" height="11" rx="2" stroke="#1a1a19" stroke-width="1.5"/><path d="M7 6V5a3 3 0 116 0v1" stroke="#1a1a19" stroke-width="1.5" stroke-linecap="round"/></svg>
+          <span style="font-size:14px; color:#555; font-weight:500;">Secure checkout</span>
+        </div>
+        <div style="display:flex; align-items:center; gap:10px;">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 18s-7-4.5-7-10a7 7 0 1114 0c0 5.5-7 10-7 10z" stroke="#1a1a19" stroke-width="1.5"/><circle cx="10" cy="8" r="2" stroke="#1a1a19" stroke-width="1.5"/></svg>
+          <span style="font-size:14px; color:#555; font-weight:500;">Dispatched from the UK</span>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer style="background:#1a1a19;" class="w-full shrink-0">
+    <div class="px-[83px] pt-[64px] pb-[40px] flex flex-col">
+      <h2 style="font-weight:700; font-size:32px; color:white; letter-spacing:-0.64px; margin-bottom:62px;">Happier happens together</h2>
+      <div style="display:flex; gap:32px; flex-wrap:wrap; margin-bottom:40px;">
+        <a href="#" style="font-size:14px; line-height:1.5; color:white; text-decoration:underline;">Accessibility</a>
+        <a href="#" style="font-size:14px; line-height:1.5; color:white; text-decoration:underline;">Privacy Policy</a>
+        <a href="#" style="font-size:14px; line-height:1.5; color:white; text-decoration:underline;">Site Map</a>
+        <a href="#" style="font-size:14px; line-height:1.5; color:white; text-decoration:underline;">Terms of Use</a>
+      </div>
+      <hr style="border-color:rgba(255,255,255,0.2); margin-bottom:24px;">
+      <p style="font-size:12px; color:white; line-height:1.5; margin:0;">© Copyright 2026 Mars</p>
+    </div>
+  </footer>
+
+  <script>
+    function selectCard(card) {
+      document.querySelectorAll('.order-card').forEach(c => c.classList.remove('selected'));
+      card.classList.add('selected');
+    }
+  </script>
+</body>
+</html>

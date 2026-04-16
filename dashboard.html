@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KIND Nuts+ — Daily Nuts. Personalized.</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    body { margin: 0; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; overflow-x: hidden; }
+
+    /* ═══════════════════════════════════════════════════════
+       POUCH — 3-step path (Step1 → Step2 → Step3)
+       ═══════════════════════════════════════════════════════
+       Outer div anchored at Step 3 position:
+         left:744.16px  top:213.73px  size:478.793×523.476px
+         center: (983.56, 475.47)
+
+       Step 1 → center (788.95, 478.24), inner image 791.31×888.70
+         tx = 788.95−983.56 = −194.61   ty = 478.24−475.47 = +2.77
+         scale = 791.31/421.11 = 1.879
+
+       Step 2 → center (976.95, 510.23), inner image 510.25×573.05
+         tx = 976.95−983.56 = −6.61    ty = 510.23−475.47 = +34.76
+         scale = 510.25/421.11 = 1.212
+
+       Step 3 → translate(0,0) scale(1)  — already in position.
+    ═══════════════════════════════════════════════════════ */
+    @keyframes pouchSlide {
+      0% {
+        transform: translate(-194.61px, 2.77px) scale(1.879);
+        animation-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
+      }
+      60% {
+        transform: translate(-6.61px, 34.76px) scale(1.212);
+        animation-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+      100% { transform: translate(0, 0) scale(1); }
+    }
+    @keyframes pouchSpin {
+      0%   { transform: rotate(-8.92deg); animation-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1); }
+      60%  { transform: rotate(2deg);     animation-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1); }
+      100% { transform: rotate(7.44deg); }
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       NUTS HAND — 3-step path (Step1 → Step2 → Step3)
+       ═══════════════════════════════════════════════════════
+       Outer div anchored at Step 3 position:
+         left:263.75px  top:259.71px  size:462.874×490.057px
+         center: (495.19, 504.74)
+
+       Step 1 → center (743.51, 752.75)
+         tx = +248.32   ty = +248.01   (mostly below viewport)
+
+       Step 2 → center (711.50, 600.74)
+         tx = +216.31   ty = +96.00
+
+       Step 3 → translate(0, 0)
+    ═══════════════════════════════════════════════════════ */
+    @keyframes nutsSlide {
+      0% {
+        transform: translate(248.32px, 248.01px);
+        opacity: 0;
+        animation-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
+      }
+      20% { opacity: 1; }
+      60% {
+        transform: translate(216.31px, 96.00px);
+        animation-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+      100% { transform: translate(0, 0); }
+    }
+    @keyframes nutsSpin {
+      0%   { transform: rotate(55.58deg);  animation-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1); }
+      60%  { transform: rotate(38.04deg);  animation-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1); }
+      100% { transform: rotate(-26.66deg); }
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       TEXT REVEAL — Scene 3
+       Each element fades + floats up independently.
+    ═══════════════════════════════════════════════════════ */
+    @keyframes textReveal {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes ctaReveal {
+      from { opacity: 0; transform: translateY(14px) scale(0.96); }
+      to   { opacity: 1; transform: translateY(0)    scale(1); }
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       TIMING — total duration ~2s
+       Scene 1 (0s):       Hero visible, pouch large+centered.
+       Scene 2 (0.3–1.3s): Pouch slides right, nuts hand rises.
+       Scene 3 (1.4–2.0s): Headline → subtext → CTA reveal.
+    ═══════════════════════════════════════════════════════ */
+    .hero-pouch     { animation: pouchSlide 1.0s linear 0.3s both; }
+    .hero-pouch-rot { animation: pouchSpin  1.0s linear 0.3s both; }
+    .hero-nuts      { animation: nutsSlide  1.0s linear 0.4s both; }
+    .hero-nuts-rot  { animation: nutsSpin   1.0s linear 0.4s both; }
+
+    .hero-heading   { animation: textReveal 0.55s cubic-bezier(0.16,1,0.3,1) 1.4s  both; }
+    .hero-sub       { animation: textReveal 0.55s cubic-bezier(0.16,1,0.3,1) 1.58s both; }
+    .hero-cta       { animation: ctaReveal  0.45s cubic-bezier(0.16,1,0.3,1) 1.74s both; }
+
+    /* ─── CTA button ──────────────────────────────────────── */
+    .cta-btn {
+      background: #1a1a19;
+      color: white;
+      font-size: 16px;
+      font-weight: 600;
+      padding: 0 28px;
+      border-radius: 24px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      white-space: nowrap;
+      height: 44px;
+      width: 248px;
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      letter-spacing: -0.01em;
+      transition: opacity 0.15s ease, transform 0.12s ease;
+    }
+    .cta-btn:hover  { opacity: 0.82; }
+    .cta-btn:active { transform: scale(0.97); }
+    .cta-btn:focus-visible { outline: 2px solid #1a1a19; outline-offset: 3px; }
+  </style>
+</head>
+<body class="bg-white flex flex-col min-h-screen">
+
+  <!-- ─── Nav ───────────────────────────────────────────────── -->
+  <nav style="background:#211f20; height:108px;" class="w-full shrink-0 flex items-center px-[86px] justify-between z-10 relative">
+    <a href="index.html">
+      <img src="https://www.figma.com/api/mcp/asset/c52ac42f-5f88-4b2f-9dfe-af4848317594"
+           alt="KIND Nuts+" style="height:80px; aspect-ratio:1250/390; object-fit:contain;">
+    </a>
+    <div class="flex items-center gap-2">
+      <img src="https://www.figma.com/api/mcp/asset/c1bc8fa4-dc3c-42d6-8b56-b68a15ad82aa" alt="" style="width:18px;height:18px;">
+      <span style="font-family:Montserrat,sans-serif;font-weight:500;color:#f1f1f1;font-size:16px;">John Miller</span>
+      <img src="https://www.figma.com/api/mcp/asset/82e53369-ee77-4c83-bd17-764cb434ab6d" alt="" style="width:18px;height:18px;">
+    </div>
+  </nav>
+
+  <!-- ─── Hero ──────────────────────────────────────────────── -->
+  <section style="height:625px; position:relative; overflow:hidden; background:#f5f3f0;"
+           class="w-full shrink-0">
+
+    <!-- Marble background (static — no animation) -->
+    <img src="https://www.figma.com/api/mcp/asset/48ac6731-b655-4042-984b-02a5f0e2ebdb"
+         alt=""
+         style="position:absolute; left:50%; top:-277px; width:1640px; height:1299px;
+                transform:translateX(-50%); object-fit:cover; pointer-events:none;">
+
+    <!-- ─── Nuts hand ────────────────────────────────────────
+         Scene 1: below viewport (translate +248, +248).
+         Scene 2: rises upward through Step2 midpoint.
+         Scene 3: lands at Step3 left position. -->
+    <div class="hero-nuts"
+         style="position:absolute; left:calc(50% - 456.25px); top:259.71px;
+                width:462.874px; height:490.057px;
+                display:flex; align-items:center; justify-content:center;">
+      <div class="hero-nuts-rot" style="width:324.381px; height:385.481px; flex-shrink:0;">
+        <img src="https://www.figma.com/api/mcp/asset/8da33e73-6164-479c-b14f-6195d94b9e53"
+             alt=""
+             style="width:100%; height:100%; object-fit:contain; pointer-events:none; display:block;">
+      </div>
+    </div>
+
+    <!-- ─── Pouch ─────────────────────────────────────────────
+         Scene 1: large + centered (scale 1.879, translate −195, +3).
+         Scene 2: shrinks and moves toward right side.
+         Scene 3: settles at final right position with slight spring. -->
+    <div class="hero-pouch"
+         style="position:absolute; left:calc(50% + 24.16px); top:213.73px;
+                width:478.793px; height:523.476px;
+                display:flex; align-items:center; justify-content:center;">
+      <div class="hero-pouch-rot" style="width:421.11px; height:472.939px; flex-shrink:0;">
+        <img src="https://www.figma.com/api/mcp/asset/75dd12d1-c439-4e57-a65f-332e12e39e30"
+             alt="KIND Nuts+ Pouch"
+             style="width:100%; height:100%; object-fit:contain; pointer-events:none; display:block;">
+      </div>
+    </div>
+
+    <!-- ─── Text content ────────────────────────────────────
+         Scene 3: each child reveals independently, staggered. -->
+    <div style="position:absolute; left:50%; top:83px; width:616px;
+                transform:translateX(-50%);
+                display:flex; flex-direction:column; gap:24px; align-items:center;">
+
+      <div style="display:flex; flex-direction:column; text-align:center; width:100%;">
+        <h1 class="hero-heading"
+            style="font-weight:700; font-size:40px; color:#1a1a19;
+                   letter-spacing:-0.8px; margin:0; line-height:1.15;">
+          Daily Nuts. Personalized
+        </h1>
+        <p class="hero-sub"
+           style="font-size:24px; color:#1a1a19; margin:20px 0 0; line-height:1.45;">
+          A Personalized blend of nuts + micronutrients +<br>functional flavors, designed for your energy needs
+        </p>
+      </div>
+
+      <a href="questions.html" class="cta-btn hero-cta">
+        Let's Get Started
+        <svg width="8" height="12" viewBox="0 0 8 12" fill="none">
+          <path d="M1.5 1L6.5 6L1.5 11" stroke="white" stroke-width="1.5"
+                stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+
+    </div>
+
+  </section>
+
+  <!-- ─── Footer ───────────────────────────────────────────── -->
+  <footer style="background:#1a1a19;" class="w-full shrink-0">
+    <div class="px-[83px] pt-[64px] pb-[40px] flex flex-col">
+      <h2 style="font-weight:700; font-size:32px; color:white; letter-spacing:-0.64px; margin-bottom:62px;">Happier happens together</h2>
+      <div style="display:flex; gap:32px; flex-wrap:wrap; margin-bottom:40px;">
+        <a href="#" style="font-size:14px; line-height:1.5; color:white; text-decoration:underline;">Accessibility</a>
+        <a href="#" style="font-size:14px; line-height:1.5; color:white; text-decoration:underline;">Privacy Policy</a>
+        <a href="#" style="font-size:14px; line-height:1.5; color:white; text-decoration:underline;">Site Map</a>
+        <a href="#" style="font-size:14px; line-height:1.5; color:white; text-decoration:underline;">Terms of Use</a>
+      </div>
+      <hr style="border-color:rgba(255,255,255,0.2); margin-bottom:24px;">
+      <p style="font-size:12px; color:white; line-height:1.5; margin:0;">© Copyright 2026 Mars</p>
+    </div>
+  </footer>
+
+</body>
+</html>
