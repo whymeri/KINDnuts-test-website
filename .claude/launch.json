@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "KIND Website",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-c", "import os, http.server, socketserver; os.chdir('/Users/ymeri/Desktop/File/_CLIENTS/_MARS SNACKING/01 INNOVATION DESIGN/2026.02.18-GPL1 Concept/KIND WEBSITE/.claude/worktrees/condescending-golick'); socketserver.TCPServer(('', 3000), http.server.SimpleHTTPRequestHandler).serve_forever()"],
+      "port": 3000
+    }
+  ]
+}
