@@ -176,23 +176,32 @@
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
-      padding: 24px;
+      padding: 22px;
       aspect-ratio: 1;
       text-decoration: none;
     }
     .nut-card .nc-overlay {
       position: absolute;
       inset: 0;
-      background: linear-gradient(to top, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0) 55%);
+      background: linear-gradient(to top, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0) 55%);
     }
     .nut-card .nc-content { position: relative; z-index: 2; }
-    .nut-card .nc-icon {
-      font-size: 2.5rem;
-      display: block;
-      margin-bottom: 8px;
-      transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    .nut-card .nut-img-wrap {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1;
     }
-    .nut-card:hover .nc-icon { transform: scale(1.18) rotate(-5deg); }
+    .nut-card .nut-img-wrap img {
+      width: 68%;
+      height: 68%;
+      object-fit: contain;
+      filter: drop-shadow(0 8px 18px rgba(0,0,0,0.22));
+      transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .nut-card:hover .nut-img-wrap img { transform: scale(1.15) rotate(-4deg); }
 
     /* Feature pill */
     .feat-pill {
@@ -434,66 +443,73 @@
 
       <div class="grid-nuts" style="display:grid; grid-template-columns:repeat(4,1fr); gap:16px;">
 
+        <!-- Peanuts -->
         <a href="#" class="nut-card card-lift" style="background:#E31837; box-shadow:0 4px 24px rgba(227,24,55,0.3);">
+          <div class="nut-img-wrap"><img src="brand_assets/nuts/nut-peanut.png" alt="Peanut"></div>
           <div class="nc-overlay"></div>
           <div class="nc-content">
-            <span class="nc-icon">🥜</span>
-            <div class="font-display" style="color:#fff; font-size:1.25rem; letter-spacing:0.01em;">PEANUTS</div>
-            <div style="color:rgba(255,255,255,0.65); font-size:0.75rem; margin-top:3px;">The OG · High protein</div>
+            <div class="font-display" style="color:#fff;font-size:1.25rem;letter-spacing:0.01em;line-height:1;">PEANUTS</div>
+            <div style="color:rgba(255,255,255,0.7);font-size:0.75rem;margin-top:4px;">The OG · High protein</div>
           </div>
         </a>
 
+        <!-- Cashews -->
         <a href="#" class="nut-card card-lift" style="background:#1B1464; box-shadow:0 4px 24px rgba(27,20,100,0.3);">
+          <div class="nut-img-wrap"><img src="brand_assets/nuts/nut-cashew.png" alt="Cashew"></div>
           <div class="nc-overlay"></div>
           <div class="nc-content">
-            <span class="nc-icon">🌰</span>
-            <div class="font-display" style="color:#fff; font-size:1.25rem; letter-spacing:0.01em;">CASHEWS</div>
-            <div style="color:rgba(255,255,255,0.65); font-size:0.75rem; margin-top:3px;">Creamy · Rich in iron</div>
+            <div class="font-display" style="color:#fff;font-size:1.25rem;letter-spacing:0.01em;line-height:1;">CASHEWS</div>
+            <div style="color:rgba(255,255,255,0.7);font-size:0.75rem;margin-top:4px;">Creamy · Rich in iron</div>
           </div>
         </a>
 
+        <!-- Almonds -->
         <a href="#" class="nut-card card-lift" style="background:#3D1C02; box-shadow:0 4px 24px rgba(61,28,2,0.35);">
+          <div class="nut-img-wrap"><img src="brand_assets/nuts/nut-almond.png" alt="Almond"></div>
           <div class="nc-overlay"></div>
           <div class="nc-content">
-            <span class="nc-icon">🪨</span>
-            <div class="font-display" style="color:#fff; font-size:1.25rem; letter-spacing:0.01em;">ALMONDS</div>
-            <div style="color:rgba(255,255,255,0.65); font-size:0.75rem; margin-top:3px;">Crunchy · Vitamin E</div>
+            <div class="font-display" style="color:#fff;font-size:1.25rem;letter-spacing:0.01em;line-height:1;">ALMONDS</div>
+            <div style="color:rgba(255,255,255,0.7);font-size:0.75rem;margin-top:4px;">Crunchy · Vitamin E</div>
           </div>
         </a>
 
+        <!-- Pistachios -->
         <a href="#" class="nut-card card-lift" style="background:#FDB813; box-shadow:0 4px 24px rgba(253,184,19,0.35);">
+          <div class="nut-img-wrap"><img src="brand_assets/nuts/nut-pistachio.png" alt="Pistachio"></div>
           <div class="nc-overlay"></div>
           <div class="nc-content">
-            <span class="nc-icon">🌿</span>
-            <div class="font-display" style="color:#1B1464; font-size:1.25rem; letter-spacing:0.01em;">PISTACHIOS</div>
-            <div style="color:rgba(27,20,100,0.65); font-size:0.75rem; margin-top:3px;">Earthy · Antioxidants</div>
+            <div class="font-display" style="color:#1B1464;font-size:1.25rem;letter-spacing:0.01em;line-height:1;">PISTACHIOS</div>
+            <div style="color:rgba(27,20,100,0.6);font-size:0.75rem;margin-top:4px;">Earthy · Antioxidants</div>
           </div>
         </a>
 
+        <!-- Walnuts -->
         <a href="#" class="nut-card card-lift" style="background:#1B1464; box-shadow:0 4px 24px rgba(27,20,100,0.3);">
+          <div class="nut-img-wrap"><img src="brand_assets/nuts/nut-walnut.png" alt="Walnut"></div>
           <div class="nc-overlay"></div>
           <div class="nc-content">
-            <span class="nc-icon">🌰</span>
-            <div class="font-display" style="color:#fff; font-size:1.25rem; letter-spacing:0.01em;">WALNUTS</div>
-            <div style="color:rgba(255,255,255,0.65); font-size:0.75rem; margin-top:3px;">Brain food · Omega-3</div>
+            <div class="font-display" style="color:#fff;font-size:1.25rem;letter-spacing:0.01em;line-height:1;">WALNUTS</div>
+            <div style="color:rgba(255,255,255,0.7);font-size:0.75rem;margin-top:4px;">Brain food · Omega-3</div>
           </div>
         </a>
 
+        <!-- Hazelnuts -->
         <a href="#" class="nut-card card-lift" style="background:#3D1C02; box-shadow:0 4px 24px rgba(61,28,2,0.35);">
+          <div class="nut-img-wrap"><img src="brand_assets/nuts/nut-hazelnut.png" alt="Hazelnut"></div>
           <div class="nc-overlay"></div>
           <div class="nc-content">
-            <span class="nc-icon">🌰</span>
-            <div class="font-display" style="color:#fff; font-size:1.25rem; letter-spacing:0.01em;">HAZELNUTS</div>
-            <div style="color:rgba(255,255,255,0.65); font-size:0.75rem; margin-top:3px;">Smooth · Folate rich</div>
+            <div class="font-display" style="color:#fff;font-size:1.25rem;letter-spacing:0.01em;line-height:1;">HAZELNUTS</div>
+            <div style="color:rgba(255,255,255,0.7);font-size:0.75rem;margin-top:4px;">Smooth · Folate rich</div>
           </div>
         </a>
 
+        <!-- Pecans -->
         <a href="#" class="nut-card card-lift" style="background:#E31837; box-shadow:0 4px 24px rgba(227,24,55,0.3);">
+          <div class="nut-img-wrap"><img src="brand_assets/nuts/nut-pecan.png" alt="Pecan"></div>
           <div class="nc-overlay"></div>
           <div class="nc-content">
-            <span class="nc-icon">🌰</span>
-            <div class="font-display" style="color:#fff; font-size:1.25rem; letter-spacing:0.01em;">PECANS</div>
-            <div style="color:rgba(255,255,255,0.65); font-size:0.75rem; margin-top:3px;">Buttery · Zinc boost</div>
+            <div class="font-display" style="color:#fff;font-size:1.25rem;letter-spacing:0.01em;line-height:1;">PECANS</div>
+            <div style="color:rgba(255,255,255,0.7);font-size:0.75rem;margin-top:4px;">Buttery · Zinc boost</div>
           </div>
         </a>
 
