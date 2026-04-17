@@ -12,71 +12,54 @@
     body { margin: 0; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; overflow-x: hidden; }
 
     /* ═══════════════════════════════════════════════════════
-       POUCH — 3-step path (Step1 → Step2 → Step3)
+       POUCH — slides from canvas-center (large) → final pos
        ═══════════════════════════════════════════════════════
-       Outer div anchored at Step 3 position:
-         left:744.16px  top:213.73px  size:478.793×523.476px
-         center: (983.56, 475.47)
-
-       Step 1 → center (788.95, 478.24), inner image 791.31×888.70
-         tx = 788.95−983.56 = −194.61   ty = 478.24−475.47 = +2.77
-         scale = 791.31/421.11 = 1.879
-
-       Step 2 → center (976.95, 510.23), inner image 510.25×573.05
-         tx = 976.95−983.56 = −6.61    ty = 510.23−475.47 = +34.76
-         scale = 510.25/421.11 = 1.212
-
-       Step 3 → translate(0,0) scale(1)  — already in position.
+       Outer container anchored at Figma Step 3 position:
+         left:728.16px  top:258.88px  size:478.793×523.476px
+         center: (967.55, 520.62)
+       Canvas center (1440×625): (720, 312.5)
+       Step 1 tx = 720−967.55 = −247.55   ty = 312.5−520.62 = −208.12
     ═══════════════════════════════════════════════════════ */
     @keyframes pouchSlide {
       0% {
-        transform: translate(-194.61px, 2.77px) scale(1.879);
+        transform: translate(-247.55px, -208.12px) scale(1.72);
         animation-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
       }
       60% {
-        transform: translate(-6.61px, 34.76px) scale(1.212);
+        transform: translate(-24px, -60px) scale(1.12);
         animation-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
       }
       100% { transform: translate(0, 0) scale(1); }
     }
     @keyframes pouchSpin {
-      0%   { transform: rotate(-8.92deg); animation-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1); }
-      60%  { transform: rotate(2deg);     animation-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1); }
-      100% { transform: rotate(7.44deg); }
+      0%   { transform: rotate(-6deg);   animation-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1); }
+      60%  { transform: rotate(2deg);    animation-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1); }
+      100% { transform: rotate(5.5deg); }
     }
 
     /* ═══════════════════════════════════════════════════════
-       NUTS HAND — 3-step path (Step1 → Step2 → Step3)
+       NUTS HAND — rises from below-right → final left pos
        ═══════════════════════════════════════════════════════
-       Outer div anchored at Step 3 position:
-         left:263.75px  top:259.71px  size:462.874×490.057px
-         center: (495.19, 504.74)
-
-       Step 1 → center (743.51, 752.75)
-         tx = +248.32   ty = +248.01   (mostly below viewport)
-
-       Step 2 → center (711.50, 600.74)
-         tx = +216.31   ty = +96.00
-
-       Step 3 → translate(0, 0)
+       Outer container anchored at Figma Step 3 position:
+         left:297.65px  top:319.23px  size:462.874×490.057px
     ═══════════════════════════════════════════════════════ */
     @keyframes nutsSlide {
       0% {
-        transform: translate(248.32px, 248.01px);
+        transform: translate(260px, 320px);
         opacity: 0;
         animation-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
       }
       20% { opacity: 1; }
       60% {
-        transform: translate(216.31px, 96.00px);
+        transform: translate(180px, 90px);
         animation-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
       }
       100% { transform: translate(0, 0); }
     }
     @keyframes nutsSpin {
-      0%   { transform: rotate(55.58deg);  animation-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1); }
-      60%  { transform: rotate(38.04deg);  animation-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1); }
-      100% { transform: rotate(-26.66deg); }
+      0%   { transform: rotate(40deg);   animation-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1); }
+      60%  { transform: rotate(20deg);   animation-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1); }
+      100% { transform: rotate(-12deg); }
     }
 
     /* ═══════════════════════════════════════════════════════
@@ -109,7 +92,7 @@
 
     /* ─── CTA button ──────────────────────────────────────── */
     .cta-btn {
-      background: #1a1a19;
+      background: #004d99;
       color: white;
       font-size: 16px;
       font-weight: 600;
@@ -148,168 +131,55 @@
   </nav>
 
   <!-- ─── Hero ──────────────────────────────────────────────── -->
-  <section style="height:625px; position:relative; overflow:hidden; background:#f5f3f0;"
+  <section style="height:625px; position:relative; overflow:hidden; background:#e8e4df;"
            class="w-full shrink-0">
 
-    <!-- Marble background (static — no animation) -->
-    <div style="position:absolute; inset:0; background:radial-gradient(ellipse at 60% 40%, #ece8e2 0%, #f0ece6 40%, #e8e4de 100%); pointer-events:none;"></div>
+    <!-- Layer 1: Full-scene background photo (marble surface + scene) -->
+    <img src="brand_assets/dashboard/background-nut-hand.jpg" alt=""
+         style="position:absolute; left:50%; top:-10px; transform:translateX(-50%);
+                width:1572px; height:775px; object-fit:cover; pointer-events:none;">
 
-    <!-- ─── Nuts hand ────────────────────────────────────────
-         Scene 1: below viewport (translate +248, +248).
-         Scene 2: rises upward through Step2 midpoint.
-         Scene 3: lands at Step3 left position. -->
+    <!-- Layer 2: Marble texture overlay -->
+    <img src="brand_assets/dashboard/background-marble-01.jpg" alt=""
+         style="position:absolute; left:-48px; top:-277px;
+                width:1640px; height:1299px; object-fit:cover; pointer-events:none;
+                opacity:0.18; mix-blend-mode:multiply;">
+
+    <!-- ─── Nuts hand (open palm with mixed nuts) ─────────────
+         Figma final: left:366.9px bottom-aligned in 473px-tall
+         container starting at top:284px → nut hand top≈371.5px
+         Outer container (462.874×490.057) anchored at left:297.65px top:319.23px -->
     <div class="hero-nuts"
-         style="position:absolute; left:calc(50% - 456.25px); top:259.71px;
+         style="position:absolute; left:297.65px; top:319.23px;
                 width:462.874px; height:490.057px;
                 display:flex; align-items:center; justify-content:center;">
       <div class="hero-nuts-rot" style="width:324.381px; height:385.481px; flex-shrink:0;">
-        <!-- Hands holding KIND Nuts+ pack illustration -->
-        <svg viewBox="0 0 324 385" xmlns="http://www.w3.org/2000/svg"
-             style="width:100%;height:100%;" aria-hidden="true">
-
-          <!-- ── KIND NUTS+ BAG (rendered first = behind hands) ── -->
-          <rect x="97" y="18" width="130" height="232" rx="15" fill="#1C1C1A"/>
-          <!-- edge depth -->
-          <rect x="97" y="18" width="15" height="232" rx="7" fill="rgba(0,0,0,0.2)"/>
-          <rect x="212" y="18" width="15" height="232" rx="7" fill="rgba(0,0,0,0.2)"/>
-          <!-- sheen -->
-          <rect x="124" y="18" width="4" height="110" rx="2" fill="rgba(255,255,255,0.04)"/>
-          <!-- top heat seal -->
-          <rect x="106" y="11" width="112" height="14" rx="6" fill="#2C2C2A"/>
-          <!-- tear notch -->
-          <rect x="200" y="9" width="7" height="9" rx="1.5" fill="#111"/>
-
-          <!-- Yellow KIND label band -->
-          <rect x="97" y="82" width="130" height="70" fill="#F5C842"/>
-          <rect x="100" y="82" width="124" height="3" fill="rgba(255,255,255,0.18)"/>
-          <!-- KIND logotype -->
-          <text x="162" y="118" text-anchor="middle"
-                font-family="'Arial Black','Helvetica Neue',Arial,sans-serif"
-                font-weight="900" font-size="30" fill="#1C1C1A" letter-spacing="-1">KIND</text>
-          <!-- NUTS+ -->
-          <text x="162" y="136" text-anchor="middle"
-                font-family="'Helvetica Neue',Arial,sans-serif"
-                font-weight="700" font-size="10" fill="#1C1C1A" letter-spacing="5.5">NUTS+</text>
-          <!-- label bottom rule -->
-          <rect x="97" y="150" width="130" height="2" fill="#D4A010"/>
-
-          <!-- nut decorations on lower bag -->
-          <ellipse cx="130" cy="174" rx="13" ry="10" fill="#8B5C38"/>
-          <ellipse cx="162" cy="181" rx="15" ry="11" fill="#7A4A28"/>
-          <ellipse cx="194" cy="174" rx="13" ry="10" fill="#8B5C38"/>
-          <ellipse cx="146" cy="200" rx="11" ry="8" fill="#6B3820" opacity="0.75"/>
-          <ellipse cx="178" cy="198" rx="11" ry="8" fill="#7A4428" opacity="0.75"/>
-          <!-- bottom seal -->
-          <rect x="106" y="238" width="112" height="10" rx="4" fill="#2C2C2A"/>
-
-          <!-- ── HANDS (rendered after = in front of bag bottom) ── -->
-
-          <!-- LEFT PALM -->
-          <rect x="12" y="255" width="116" height="92" rx="24" fill="#C8815A"/>
-          <!-- left fingers -->
-          <rect x="18" y="196" width="21" height="66" rx="10.5" fill="#C8815A"/>
-          <rect x="43" y="184" width="22" height="78" rx="11"   fill="#C8815A"/>
-          <rect x="69" y="178" width="22" height="84" rx="11"   fill="#C8815A"/>
-          <rect x="95" y="185" width="21" height="77" rx="10.5" fill="#C8815A"/>
-          <!-- left thumb -->
-          <ellipse cx="138" cy="289" rx="14" ry="25" fill="#C8815A" transform="rotate(26 138 289)"/>
-          <!-- left knuckles -->
-          <line x1="29"  y1="238" x2="29"  y2="242" stroke="rgba(0,0,0,0.1)" stroke-width="6"  stroke-linecap="round"/>
-          <line x1="54"  y1="226" x2="54"  y2="230" stroke="rgba(0,0,0,0.1)" stroke-width="6.5" stroke-linecap="round"/>
-          <line x1="80"  y1="220" x2="80"  y2="224" stroke="rgba(0,0,0,0.1)" stroke-width="6.5" stroke-linecap="round"/>
-          <line x1="106" y1="226" x2="106" y2="230" stroke="rgba(0,0,0,0.1)" stroke-width="6"  stroke-linecap="round"/>
-          <!-- left palm highlight -->
-          <ellipse cx="62" cy="298" rx="26" ry="12" fill="rgba(255,200,140,0.18)"/>
-
-          <!-- RIGHT PALM -->
-          <rect x="196" y="255" width="116" height="92" rx="24" fill="#C8815A"/>
-          <!-- right fingers -->
-          <rect x="208" y="185" width="21" height="77" rx="10.5" fill="#C8815A"/>
-          <rect x="233" y="178" width="22" height="84" rx="11"   fill="#C8815A"/>
-          <rect x="259" y="184" width="22" height="78" rx="11"   fill="#C8815A"/>
-          <rect x="285" y="196" width="21" height="66" rx="10.5" fill="#C8815A"/>
-          <!-- right thumb -->
-          <ellipse cx="186" cy="289" rx="14" ry="25" fill="#C8815A" transform="rotate(-26 186 289)"/>
-          <!-- right knuckles -->
-          <line x1="219" y1="226" x2="219" y2="230" stroke="rgba(0,0,0,0.1)" stroke-width="6"  stroke-linecap="round"/>
-          <line x1="244" y1="220" x2="244" y2="224" stroke="rgba(0,0,0,0.1)" stroke-width="6.5" stroke-linecap="round"/>
-          <line x1="270" y1="226" x2="270" y2="230" stroke="rgba(0,0,0,0.1)" stroke-width="6.5" stroke-linecap="round"/>
-          <line x1="295" y1="238" x2="295" y2="242" stroke="rgba(0,0,0,0.1)" stroke-width="6"  stroke-linecap="round"/>
-          <!-- right palm highlight -->
-          <ellipse cx="262" cy="298" rx="26" ry="12" fill="rgba(255,200,140,0.18)"/>
-
-          <!-- ground shadow -->
-          <ellipse cx="162" cy="376" rx="100" ry="8" fill="rgba(0,0,0,0.1)"/>
-        </svg>
+        <!-- Open palm with mixed nuts (real photo from Figma) -->
+        <img src="brand_assets/dashboard/graphic-nuts-hand-01.png"
+             alt="Hand holding mixed nuts"
+             style="width:100%; height:100%; object-fit:contain; pointer-events:none; display:block;">
       </div>
     </div>
 
-    <!-- ─── Pouch ─────────────────────────────────────────────
-         Scene 1: large + centered (scale 1.879, translate −195, +3).
-         Scene 2: shrinks and moves toward right side.
-         Scene 3: settles at final right position with slight spring. -->
+    <!-- ─── Pouch (hand holding KIND Nuts+ Sea Salt & Vinegar bag) ─
+         Figma final: left:728.16px top:258.88px size:478.793×523.476px
+         Scene 1: large + centered on canvas.
+         Scene 2: shrinks and moves toward right.
+         Scene 3: settles at final position with spring. -->
     <div class="hero-pouch"
-         style="position:absolute; left:calc(50% + 24.16px); top:213.73px;
+         style="position:absolute; left:728.16px; top:258.88px;
                 width:478.793px; height:523.476px;
                 display:flex; align-items:center; justify-content:center;">
-      <div class="hero-pouch-rot" style="width:421.11px; height:472.939px; flex-shrink:0;">
-        <!-- KIND Nuts+ product pouch illustration -->
-        <svg viewBox="0 0 421 473" xmlns="http://www.w3.org/2000/svg"
-             style="width:100%;height:100%;" aria-label="KIND Nuts+ Pouch">
-
-          <!-- drop shadow -->
-          <ellipse cx="210" cy="460" rx="130" ry="14" fill="rgba(0,0,0,0.14)"/>
-
-          <!-- ── PRODUCT BAG ── -->
-          <rect x="105" y="22" width="211" height="398" rx="22" fill="#1C1C1A"/>
-          <!-- edge depth left -->
-          <rect x="105" y="22" width="24" height="398" rx="12" fill="rgba(0,0,0,0.22)"/>
-          <!-- edge depth right -->
-          <rect x="292" y="22" width="24" height="398" rx="12" fill="rgba(0,0,0,0.22)"/>
-          <!-- bag sheen -->
-          <rect x="148" y="22" width="6" height="190" rx="3" fill="rgba(255,255,255,0.05)"/>
-          <!-- top heat seal -->
-          <rect x="118" y="13" width="185" height="18" rx="8" fill="#2C2C2A"/>
-          <!-- tear notch -->
-          <rect x="277" y="10" width="10" height="12" rx="2" fill="#111"/>
-
-          <!-- Yellow KIND label band -->
-          <rect x="105" y="122" width="211" height="118" fill="#F5C842"/>
-          <rect x="108" y="122" width="205" height="4" fill="rgba(255,255,255,0.18)"/>
-          <!-- KIND logotype -->
-          <text x="210" y="180" text-anchor="middle"
-                font-family="'Arial Black','Helvetica Neue',Arial,sans-serif"
-                font-weight="900" font-size="48" fill="#1C1C1A" letter-spacing="-2">KIND</text>
-          <!-- NUTS+ -->
-          <text x="210" y="218" text-anchor="middle"
-                font-family="'Helvetica Neue',Arial,sans-serif"
-                font-weight="700" font-size="16" fill="#1C1C1A" letter-spacing="8">NUTS+</text>
-          <!-- label bottom rule -->
-          <rect x="105" y="238" width="211" height="3" fill="#D4A010"/>
-
-          <!-- nut decorations -->
-          <ellipse cx="162" cy="275" rx="21" ry="15" fill="#8B5C38"/>
-          <ellipse cx="210" cy="285" rx="24" ry="17" fill="#7A4A28"/>
-          <ellipse cx="258" cy="275" rx="21" ry="15" fill="#8B5C38"/>
-          <ellipse cx="180" cy="315" rx="18" ry="13" fill="#6B3820" opacity="0.8"/>
-          <ellipse cx="238" cy="312" rx="18" ry="13" fill="#7A4428" opacity="0.8"/>
-          <ellipse cx="209" cy="345" rx="16" ry="11" fill="#5A3018" opacity="0.7"/>
-
-          <!-- decorative text -->
-          <text x="210" y="376" text-anchor="middle"
-                font-family="'Helvetica Neue',Arial,sans-serif"
-                font-weight="400" font-size="10" fill="rgba(255,255,255,0.3)" letter-spacing="3">DAILY · PERSONALIZED</text>
-
-          <!-- bottom seal -->
-          <rect x="118" y="408" width="185" height="14" rx="6" fill="#2C2C2A"/>
-        </svg>
+      <div class="hero-pouch-rot" style="width:421.108px; height:472.767px; flex-shrink:0;">
+        <!-- Hand holding KIND Nuts+ pouch (real photo from Figma) -->
+        <img src="brand_assets/dashboard/background-nut-pouch-01.png"
+             alt="KIND Nuts+ Pouch"
+             style="width:100%; height:100%; object-fit:contain; pointer-events:none; display:block;">
       </div>
     </div>
 
-    <!-- ─── Text content ────────────────────────────────────
-         Scene 3: each child reveals independently, staggered. -->
-    <div style="position:absolute; left:50%; top:83px; width:616px;
-                transform:translateX(-50%);
+    <!-- ─── Text content (Figma: left:412px top:83px w:616px) ── -->
+    <div style="position:absolute; left:412px; top:83px; width:616px;
                 display:flex; flex-direction:column; gap:24px; align-items:center;">
 
       <div style="display:flex; flex-direction:column; text-align:center; width:100%;">
