@@ -22,10 +22,10 @@
     const { useState } = React;
 
     // ─── Assets ───────────────────────────────────────────────────────────────
-    const LOGO        = "https://www.figma.com/api/mcp/asset/a53a6ba0-407e-4e35-b5c7-f21ab7a986f6";
-    const BG_TEXTURE  = "https://www.figma.com/api/mcp/asset/f3c994a2-8948-4480-b3c4-175e22351ea4";
-    const ACCOUNT_ICO = "https://www.figma.com/api/mcp/asset/9c080dc4-3027-4829-980b-29b7d65c74ba";
-    const CHEVRON     = "https://www.figma.com/api/mcp/asset/09619d4a-82bc-4d40-aa87-77d9ac361a5d";
+    const LOGO        = "brand_assets/KindNuts-logo.png";
+    const BG_TEXTURE  = null;
+    const ACCOUNT_ICO = null;
+    const CHEVRON     = null;
 
     // ─── SVG Radio Icons ──────────────────────────────────────────────────────
     function RadioSelected() {
@@ -52,10 +52,10 @@
           <img src={LOGO} alt="KIND Nuts+" className="h-[80px] object-contain"
                style={{aspectRatio:"1250/390"}} />
           <div className="flex items-center gap-2">
-            <img src={ACCOUNT_ICO} alt="" className="w-[18px] h-[18px]" />
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="6" r="3" stroke="#f1f1f1" strokeWidth="1.5"/><path d="M3 15c0-3.314 2.686-6 6-6s6 2.686 6 6" stroke="#f1f1f1" strokeWidth="1.5" strokeLinecap="round"/></svg>
             <span className="text-[#f1f1f1] text-[16px] font-medium"
                   style={{fontFamily:"Montserrat, sans-serif"}}>John Miller</span>
-            <img src={CHEVRON} alt="" className="w-[18px] h-[18px]" />
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M5 7l4 4 4-4" stroke="#f1f1f1" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
           </div>
         </nav>
       );
@@ -177,9 +177,8 @@
         <div className="flex flex-col min-h-screen bg-white">
           <Nav />
           <main className="flex-1 relative overflow-hidden flex items-center justify-center">
-            <img src={BG_TEXTURE} alt="" aria-hidden="true"
-                 className="absolute inset-0 w-full h-full object-cover pointer-events-none"
-                 style={{opacity:0.4}} />
+            <div className="absolute inset-0 pointer-events-none"
+                 style={{background:"radial-gradient(ellipse at 70% 30%, #f5f0eb 0%, #ede8e2 60%, #e5e0da 100%)", opacity:0.4}} />
             <div className="relative z-10 text-center px-8">
               <div className="bg-white rounded-[24px] p-[48px] max-w-[600px] mx-auto"
                    style={{boxShadow:"0px 1.4px 8px 0px rgba(26,26,25,0.25)"}}>
@@ -361,9 +360,8 @@
         <div className="flex flex-col min-h-screen bg-white">
           <Nav />
           <main className="flex-1 relative overflow-hidden">
-            <img src={BG_TEXTURE} alt="" aria-hidden="true"
-                 className="absolute inset-0 w-full h-full object-cover pointer-events-none"
-                 style={{opacity:0.4}} />
+            <div className="absolute inset-0 pointer-events-none"
+                 style={{background:"radial-gradient(ellipse at 70% 30%, #f5f0eb 0%, #ede8e2 60%, #e5e0da 100%)", opacity:0.4}} />
             <div className="relative z-10 py-[80px] px-[104px] flex flex-col gap-[24px]">
               <p className="text-[24px] font-bold text-[#1a1a19] leading-[1.2]"
                  style={{fontFamily:"Helvetica Neue, Helvetica, sans-serif"}}>
