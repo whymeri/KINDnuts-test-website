@@ -386,7 +386,7 @@
                   total={STEPS.length}
                   onBack={() => step > 0 && setStep(s => s - 1)}
                   onNext={() => step < STEPS.length - 1 && setStep(s => s + 1)}
-                  onSubmit={() => setDone(true)}
+                  onSubmit={() => { window.location.href = 'results.html'; }}
                 />
               </div>
             </div>
